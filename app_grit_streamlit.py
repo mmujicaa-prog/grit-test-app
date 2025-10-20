@@ -5,7 +5,9 @@ import sqlite3
 from datetime import datetime
 import altair as alt
 
-DB_PATH = "grit_responses.db"
+import os
+DB_PATH = os.path.join("/tmp", "grit_responses.db")
+
 ADMIN_PASSWORD = "admin"
 st.set_page_config(page_title="Test Grit - App", layout="centered")
 

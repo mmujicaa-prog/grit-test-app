@@ -222,5 +222,58 @@ def main():
 
                         pdf_buffer = generate_pdf(participant_id, email, answers, perc, cons, total, level)
                         st.download_button(
-                            label="📄 Descargar reporte PDF"
+                            label="📄 Descargar reporte PDF",
+                            data=pdf_buffer,
+                            file_name=f"Reporte_Grit_{participant_id or 'participante'}.pdf",
+                            mime="application/pdf"
+                        )
+                    except Exception:
+                        st.error("Error al procesar las respuestas. Recarga la página e inténtalo de nuevo.")
+                        st.code(traceback.format_exc())
 
+    elif menu == "Panel administrativo":
+        st.header("Panel administrativo")
+        pwd = st.text_input("Contraseña de administrador", type="password")
+        if pwd != ADMIN_PASSWORD:
+            st.warning("Introduce la contraseña correcta para ver los resultados.")
+            return
+
+        df = load_all_responses()
+        st.subheader("📊 Respuestas registradas")
+        st.write(f"Total respuestas: {len(df)}")
+
+        if len(df) == 0:
+            st.info("No hay respuestas todavía.")
+            return
+
+        to_show = df.copy()
+        if "id" in to_show.columns:
+            to_show = to_show.drop(columns=["id"])
+        st.dataframe(to_show.sort_values("timestamp", ascending=False))
+
+        st.subheader("📈 Estadísticas generales")
+        try:
+            stats = {
+                "Promedio Perseverancia": float(df["perseverance"].mean()),
+                "Promedio Consistencia": float(df["consistency"].mean()),
+                "Promedio Grit Total": float(df["grit_total"].mean())
+            }
+            st.write(pd.DataFrame.from_dict(stats, orient="index", columns=["Valor"]))
+        except Exception:
+            st.info("No se pudieron calcular estadísticas.")
+
+        try:
+            chart_df = df[["perseverance","consistency","grit_total"]].melt(var_name="Subescala", value_name="Valor")
+            chart = alt.Chart(chart_df).mark_boxplot().encode(x="Subescala:N", y="Valor:Q")
+            st.altair_chart(chart, use_container_width=True)
+        except Exception:
+            pass
+
+        try:
+            csv = df.to_csv(index=False).encode('utf-8')
+            st.download_button("📥 Descargar todas las respuestas (CSV)", data=csv, file_name="todas_respuestas_grit.csv", mime="text/csv")
+        except Exception:
+            st.error("No se pudo generar el CSV.")
+
+if __name__ == "__main__":
+    main()

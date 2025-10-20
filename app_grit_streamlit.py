@@ -147,28 +147,61 @@ def score_answers(raw_answers):
     return perseverance, consistency, grit_total, level
 
 # -----------------------
+# Función auxiliar para dividir texto en varias líneas según ancho disponible
+# -----------------------
+def split_text(text, max_width, canvas_obj):
+    words = text.split()
+    lines = []
+    current_line = ""
+    for word in words:
+        test_line = current_line + (" " if current_line else "") + word
+        if canvas_obj.stringWidth(test_line, "Helvetica", 12) <= max_width:
+            current_line = test_line
+        else:
+            lines.append(current_line)
+            current_line = word
+    if current_line:
+        lines.append(current_line)
+    return lines
+
+# -----------------------
 # Función para generar PDF con interpretación detallada
 # -----------------------
 def generate_pdf(participant_id, email, answers, perseverance, consistency, grit_total, grit_level):
     buffer = io.BytesIO()
     c = canvas.Canvas(buffer, pagesize=letter)
     width, height = letter
-    c.setFont("Helvetica-Bold", 16)
-    c.drawCentredString(width/2, height - 50, "Informe del Test de Grit")
-    
-    c.setFont("Helvetica", 12)
-    c.drawString(50, height - 90, f"ID del participante: {participant_id or 'No proporcionado'}")
-    c.drawString(50, height - 110, f"Correo electrónico: {email or 'No proporcionado'}")
-    c.drawString(50, height - 130, f"Fecha y hora: {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC")
-    
-    c.drawString(50, height - 170, "Resultados del Test:")
-    c.drawString(70, height - 190, f"Perseverancia del esfuerzo: {perseverance:.2f}")
-    c.drawString(70, height - 210, f"Consistencia del interés: {consistency:.2f}")
-    c.drawString(70, height - 230, f"Puntaje total: {grit_total:.2f}")
-    c.drawString(70, height - 250, f"Nivel de Grit: {grit_level}")
+    margin = 50
+    line_height = 18
+    y = height - 50
 
-    # Interpretaciones
-    c.drawString(50, height - 290, "Interpretación:")
+    c.setFont("Helvetica-Bold", 16)
+    c.drawCentredString(width/2, y, "Informe del Test de Grit")
+    y -= 40
+
+    c.setFont("Helvetica", 12)
+    c.drawString(margin, y, f"ID del participante: {participant_id or 'No proporcionado'}")
+    y -= line_height
+    c.drawString(margin, y, f"Correo electrónico: {email or 'No proporcionado'}")
+    y -= line_height
+    c.drawString(margin, y, f"Fecha y hora: {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC")
+    y -= line_height * 2
+
+    # Resultados numéricos
+    c.drawString(margin, y, "Resultados del Test:")
+    y -= line_height
+    c.drawString(margin + 20, y, f"Perseverancia del esfuerzo: {perseverance:.2f}")
+    y -= line_height
+    c.drawString(margin + 20, y, f"Consistencia del interés: {consistency:.2f}")
+    y -= line_height
+    c.drawString(margin + 20, y, f"Puntaje total: {grit_total:.2f}")
+    y -= line_height
+    c.drawString(margin + 20, y, f"Nivel de Grit: {grit_level}")
+    y -= line_height * 2
+
+    # Interpretación detallada
+    c.drawString(margin, y, "Interpretación:")
+    y -= line_height
 
     # Puntaje total
     grit_interp = {
@@ -178,7 +211,9 @@ def generate_pdf(participant_id, email, answers, perseverance, consistency, grit
         "Bajo": "Nivel bajo de Grit: se recomienda trabajar en mantener el esfuerzo y la constancia.",
         "Muy bajo": "Nivel muy bajo de Grit: se necesita reforzar hábitos de perseverancia y constancia."
     }
-    c.drawString(70, height - 310, f"Grit Total: {grit_interp.get(grit_level, '')}")
+    for line in split_text(grit_interp.get(grit_level, ""), width - 2*margin, c):
+        c.drawString(margin + 20, y, line)
+        y -= line_height
 
     # Perseverancia
     perc_interp = "Alta" if perseverance >= 4.0 else "Moderada" if perseverance >= 2.5 else "Baja"
@@ -187,7 +222,11 @@ def generate_pdf(participant_id, email, answers, perseverance, consistency, grit
         "Moderada": "Es capaz de esforzarse, pero a veces se distrae o se desanima.",
         "Baja": "Dificultad para mantener esfuerzo prolongado; puede abandonar proyectos con facilidad."
     }
-    c.drawString(70, height - 330, f"Perseverancia del esfuerzo: {perc_interp} — {perc_text[perc_interp]}")
+    c.drawString(margin + 20, y, f"Perseverancia del esfuerzo: {perc_interp}")
+    y -= line_height
+    for line in split_text(perc_text[perc_interp], width - 2*margin, c):
+        c.drawString(margin + 40, y, line)
+        y -= line_height
 
     # Consistencia
     cons_interp = "Alta" if consistency >= 4.0 else "Moderada" if consistency >= 2.5 else "Baja"
@@ -196,7 +235,11 @@ def generate_pdf(participant_id, email, answers, perseverance, consistency, grit
         "Moderada": "Intereses algo cambiantes; puede alternar entre proyectos con cierta frecuencia.",
         "Baja": "Intereses muy cambiantes; dificultad para mantener enfoque prolongado."
     }
-    c.drawString(70, height - 350, f"Consistencia del interés: {cons_interp} — {cons_text[cons_interp]}")
+    c.drawString(margin + 20, y, f"Consistencia del interés: {cons_interp}")
+    y -= line_height
+    for line in split_text(cons_text[cons_interp], width - 2*margin, c):
+        c.drawString(margin + 40, y, line)
+        y -= line_height
 
     c.showPage()
     c.save()
@@ -305,4 +348,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 

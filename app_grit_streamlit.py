@@ -15,7 +15,7 @@ import io
 # -----------------------
 # Configuración
 # -----------------------
-DB_PATH = os.path.join("/tmp", "grit_responses.db")  # carpeta escribible en Streamlit Cloud
+DB_PATH = os.path.join("/tmp", "grit_responses.db")
 ADMIN_PASSWORD = "admin"  # cambiar antes de publicar
 st.set_page_config(page_title="Test Grit - App", layout="centered")
 
@@ -77,8 +77,6 @@ def init_db(path=DB_PATH):
     conn.close()
 
 def save_response(participant_id, email, answers, perseverance, consistency, grit_total, grit_level, path=DB_PATH):
-    if not isinstance(answers, (list, tuple)) or len(answers) != 12:
-        raise ValueError(f"Se esperaban 12 respuestas; recibidas: {len(answers) if isinstance(answers,(list,tuple)) else 'tipo inválido'}")
     placeholders = ",".join(["?"] * 19)
     sql = f"""
         INSERT INTO responses (
@@ -92,9 +90,7 @@ def save_response(participant_id, email, answers, perseverance, consistency, gri
         participant_id or "",
         email or "",
         datetime.utcnow().isoformat(),
-        int(answers[0]), int(answers[1]), int(answers[2]), int(answers[3]),
-        int(answers[4]), int(answers[5]), int(answers[6]), int(answers[7]),
-        int(answers[8]), int(answers[9]), int(answers[10]), int(answers[11]),
+        *[int(a) for a in answers],
         float(perseverance), float(consistency), float(grit_total), str(grit_level)
     )
     max_retries = 6
@@ -193,10 +189,14 @@ def main():
     if menu == "Aplicar test":
         st.header("Aplicar test")
         st.write("Responde las afirmaciones seleccionando la opción que más se parezca a ti.")
+
+        answers = []
+
+        # --- FORMULARIO ---
         with st.form("grit_form"):
             participant_id = st.text_input("ID del participante (opcional)")
             email = st.text_input("Correo electrónico (opcional)")
-            answers = []
+
             for num, text, tipo in ITEMS:
                 st.markdown(f"**{num}. {text}**")
                 options = SCALE_NORMAL if tipo=="normal" else SCALE_INVERTED
@@ -207,29 +207,32 @@ def main():
                 answers.append(mapping[choice_label])
 
             submitted = st.form_submit_button("Enviar respuestas")
-            if submitted:
-                if len(answers) != 12:
-                    st.error(f"Se han detectado {len(answers)} respuestas (se requieren 12).")
-                else:
-                    try:
-                        perc, cons, total, level = score_answers(answers)
-                        save_response(participant_id, email, answers, perc, cons, total, level)
-                        st.success("✅ Respuesta registrada correctamente")
-                        st.markdown("### 🧾 Resultado individual:")
-                        st.write(f"- **Perseverancia del esfuerzo:** {perc:.2f}")
-                        st.write(f"- **Consistencia del interés:** {cons:.2f}")
-                        st.write(f"- **Puntaje total (1-5):** {total:.2f} — **{level}**")
 
-                        pdf_buffer = generate_pdf(participant_id, email, answers, perc, cons, total, level)
-                        st.download_button(
-                            label="📄 Descargar reporte PDF",
-                            data=pdf_buffer,
-                            file_name=f"Reporte_Grit_{participant_id or 'participante'}.pdf",
-                            mime="application/pdf"
-                        )
-                    except Exception:
-                        st.error("Error al procesar las respuestas. Recarga la página e inténtalo de nuevo.")
-                        st.code(traceback.format_exc())
+        # --- FUERA DEL FORMULARIO ---
+        if submitted:
+            if len(answers) != 12:
+                st.error(f"Se han detectado {len(answers)} respuestas (se requieren 12).")
+            else:
+                try:
+                    perc, cons, total, level = score_answers(answers)
+                    save_response(participant_id, email, answers, perc, cons, total, level)
+                    st.success("✅ Respuesta registrada correctamente")
+                    st.markdown("### 🧾 Resultado individual:")
+                    st.write(f"- **Perseverancia del esfuerzo:** {perc:.2f}")
+                    st.write(f"- **Consistencia del interés:** {cons:.2f}")
+                    st.write(f"- **Puntaje total (1-5):** {total:.2f} — **{level}**")
+
+                    # ✅ PDF fuera del formulario
+                    pdf_buffer = generate_pdf(participant_id, email, answers, perc, cons, total, level)
+                    st.download_button(
+                        label="📄 Descargar reporte PDF",
+                        data=pdf_buffer,
+                        file_name=f"Reporte_Grit_{participant_id or 'participante'}.pdf",
+                        mime="application/pdf"
+                    )
+                except Exception:
+                    st.error("Error al procesar las respuestas. Recarga la página e inténtalo de nuevo.")
+                    st.code(traceback.format_exc())
 
     elif menu == "Panel administrativo":
         st.header("Panel administrativo")

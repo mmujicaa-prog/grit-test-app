@@ -16,7 +16,7 @@ import io
 # Configuración
 # -----------------------
 DB_PATH = os.path.join("/tmp", "grit_responses.db")
-ADMIN_PASSWORD = "admin"  # cambiar antes de publicar
+ADMIN_PASSWORD = "Mm795415+"  # cambiar antes de publicar
 st.set_page_config(page_title="Test Grit - App", layout="centered")
 
 # -----------------------

@@ -8,13 +8,15 @@ import altair as alt
 import os
 import time
 import traceback
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+import io
 
 # -----------------------
 # Configuración
 # -----------------------
-# En Streamlit Cloud sólo /tmp es escribible
-DB_PATH = os.path.join("/tmp", "grit_responses.db")
-ADMIN_PASSWORD = "admin"  # cambia antes de publicar
+DB_PATH = os.path.join("/tmp", "grit_responses.db")  # carpeta escribible en Streamlit Cloud
+ADMIN_PASSWORD = "admin"  # cambiar antes de publicar
 st.set_page_config(page_title="Test Grit - App", layout="centered")
 
 # -----------------------
@@ -52,19 +54,12 @@ SCALE_INVERTED = [
 ]
 
 # -----------------------
-# Funciones DB y utilidades
+# Funciones de base de datos y utilidades
 # -----------------------
 def get_connection(path=DB_PATH):
-    """
-    Abrir conexión SQLite con parámetros que reducen
-    la probabilidad de 'database is locked'.
-    """
-    # timeout mayor y permitir threads distintos (Streamlit puede usar hilos)
     return sqlite3.connect(path, timeout=30, check_same_thread=False)
 
-
 def init_db(path=DB_PATH):
-    """Crear tabla si no existe."""
     conn = get_connection(path)
     cur = conn.cursor()
     cur.execute("""
@@ -81,17 +76,10 @@ def init_db(path=DB_PATH):
     conn.commit()
     conn.close()
 
-
 def save_response(participant_id, email, answers, perseverance, consistency, grit_total, grit_level, path=DB_PATH):
-    """
-    Guarda una fila en la tabla responses.
-    Implementa validación y reintentos ante bloqueo de DB.
-    """
-    # Validar longitud de answers
     if not isinstance(answers, (list, tuple)) or len(answers) != 12:
-        raise ValueError(f"Se esperaban 12 respuestas; recibidas: {len(answers) if isinstance(answers, (list,tuple)) else 'tipo inválido'}")
-
-    placeholders = ",".join(["?"] * 19)  # 19 parámetros a insertar
+        raise ValueError(f"Se esperaban 12 respuestas; recibidas: {len(answers) if isinstance(answers,(list,tuple)) else 'tipo inválido'}")
+    placeholders = ",".join(["?"] * 19)
     sql = f"""
         INSERT INTO responses (
             participant_id, email, timestamp,
@@ -100,7 +88,6 @@ def save_response(participant_id, email, answers, perseverance, consistency, gri
         )
         VALUES ({placeholders})
     """
-
     params = (
         participant_id or "",
         email or "",
@@ -110,7 +97,6 @@ def save_response(participant_id, email, answers, perseverance, consistency, gri
         int(answers[8]), int(answers[9]), int(answers[10]), int(answers[11]),
         float(perseverance), float(consistency), float(grit_total), str(grit_level)
     )
-
     max_retries = 6
     for attempt in range(1, max_retries + 1):
         try:
@@ -119,31 +105,25 @@ def save_response(participant_id, email, answers, perseverance, consistency, gri
             cur.execute(sql, params)
             conn.commit()
             conn.close()
-            return  # éxito
-        except sqlite3.OperationalError as e:
-            # reintentar con backoff corto
+            return
+        except sqlite3.OperationalError:
             if attempt == max_retries:
-                # si falla al último intento, levantar error para que la app lo muestre/loguee
                 raise
             time.sleep(0.2 * attempt)
         except Exception:
-            # otros errores: cerrar conexión si abierta y relanzar
             try:
                 conn.close()
             except Exception:
                 pass
             raise
 
-
 def load_all_responses(path=DB_PATH):
-    """Lee todas las respuestas. Si la tabla no existe aún, devuelve df vacío."""
     try:
         conn = get_connection(path)
         df = pd.read_sql_query("SELECT * FROM responses", conn)
         conn.close()
         return df
     except Exception:
-        # Si ocurre cualquier error (tabla no creada, archivo dañado), devolver df vacío con columnas esperadas
         cols = [
             "id","participant_id","email","timestamp",
             "q1","q2","q3","q4","q5","q6","q7","q8","q9","q10","q11","q12",
@@ -151,12 +131,9 @@ def load_all_responses(path=DB_PATH):
         ]
         return pd.DataFrame(columns=cols)
 
-
 def score_answers(raw_answers):
-    """Calcula subescalas y nivel de grit."""
-    perseverance_idx = [0, 3, 5, 8, 9, 11]   # 1,4,6,9,10,12 (0-based)
-    consistency_idx = [1, 2, 4, 6, 7, 10]    # 2,3,5,7,8,11
-    # Forzar conversion a int
+    perseverance_idx = [0,3,5,8,9,11]
+    consistency_idx = [1,2,4,6,7,10]
     vals = [int(v) for v in raw_answers]
     perseverance = sum(vals[i] for i in perseverance_idx) / len(perseverance_idx)
     consistency = sum(vals[i] for i in consistency_idx) / len(consistency_idx)
@@ -173,116 +150,76 @@ def score_answers(raw_answers):
         level = "Muy bajo"
     return perseverance, consistency, grit_total, level
 
+# -----------------------
+# Función para generar PDF
+# -----------------------
+def generate_pdf(participant_id, email, answers, perseverance, consistency, grit_total, grit_level):
+    buffer = io.BytesIO()
+    c = canvas.Canvas(buffer, pagesize=letter)
+    width, height = letter
+    c.setFont("Helvetica-Bold", 16)
+    c.drawCentredString(width/2, height - 50, "Informe del Test de Grit")
+    c.setFont("Helvetica", 12)
+    c.drawString(50, height - 90, f"ID del participante: {participant_id or 'No proporcionado'}")
+    c.drawString(50, height - 110, f"Correo electrónico: {email or 'No proporcionado'}")
+    c.drawString(50, height - 130, f"Fecha y hora: {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC")
+    c.drawString(50, height - 170, "Resultados del Test:")
+    c.drawString(70, height - 190, f"Perseverancia del esfuerzo: {perseverance:.2f}")
+    c.drawString(70, height - 210, f"Consistencia del interés: {consistency:.2f}")
+    c.drawString(70, height - 230, f"Puntaje total: {grit_total:.2f}")
+    c.drawString(70, height - 250, f"Nivel de Grit: {grit_level}")
+    interpret = {
+        "Muy alto": "Excelente nivel de perseverancia y consistencia.",
+        "Alto": "Buen nivel de perseverancia y consistencia.",
+        "Moderado": "Nivel moderado; hay espacio para mejorar.",
+        "Bajo": "Nivel bajo; se recomienda trabajar en la constancia.",
+        "Muy bajo": "Nivel muy bajo; se recomienda reforzar hábitos de perseverancia."
+    }
+    c.drawString(50, height - 290, "Interpretación:")
+    c.drawString(70, height - 310, interpret.get(grit_level, ""))
+    c.showPage()
+    c.save()
+    buffer.seek(0)
+    return buffer
 
 # -----------------------
-# Interfaz Streamlit
+# Interfaz principal
 # -----------------------
 def main():
     init_db(DB_PATH)
     st.title("🧭 Test Escala de Grit")
     menu = st.sidebar.selectbox("Navegación", ["Aplicar test", "Panel administrativo"])
 
-    # -- Aplicar test --
     if menu == "Aplicar test":
         st.header("Aplicar test")
         st.write("Responde las afirmaciones seleccionando la opción que más se parezca a ti.")
-        # Usar form para agrupar y validar
         with st.form("grit_form"):
             participant_id = st.text_input("ID del participante (opcional)")
             email = st.text_input("Correo electrónico (opcional)")
             answers = []
-            # Mostrar cada pregunta
             for num, text, tipo in ITEMS:
                 st.markdown(f"**{num}. {text}**")
-                options = SCALE_NORMAL if tipo == "normal" else SCALE_INVERTED
-                # extraer etiquetas y valores
+                options = SCALE_NORMAL if tipo=="normal" else SCALE_INVERTED
                 labels = [o[0] for o in options]
                 values = [o[1] for o in options]
-                # radio devuelve la etiqueta; la mapeamos al valor numérico
                 choice_label = st.radio("", labels, key=f"q{num}")
-                # por seguridad, comprobamos que exista en el diccionario
                 mapping = dict(zip(labels, values))
-                if choice_label not in mapping:
-                    st.error("Error interno de las opciones. Intente recargar la página.")
-                    return
                 answers.append(mapping[choice_label])
 
             submitted = st.form_submit_button("Enviar respuestas")
             if submitted:
-                # Validación por si no hay 12 respuestas (debería haberlas)
                 if len(answers) != 12:
-                    st.error(f"Se han detectado {len(answers)} respuestas (se requieren 12). Recarga la página e inténtalo de nuevo.")
+                    st.error(f"Se han detectado {len(answers)} respuestas (se requieren 12).")
                 else:
                     try:
                         perc, cons, total, level = score_answers(answers)
-                        # Guardar en DB con manejo de errores
-                        try:
-                            save_response(participant_id, email, answers, perc, cons, total, level)
-                        except Exception as e:
-                            # mostrar detalle resumido y registro en logs de servidor
-                            st.error("Error al guardar la respuesta en la base de datos. Inténtalo de nuevo.")
-                            st.write("Detalle técnico (solo para desarrollador):")
-                            st.code(traceback.format_exc())
-                            return
-
+                        save_response(participant_id, email, answers, perc, cons, total, level)
                         st.success("✅ Respuesta registrada correctamente")
                         st.markdown("### 🧾 Resultado individual:")
                         st.write(f"- **Perseverancia del esfuerzo:** {perc:.2f}")
                         st.write(f"- **Consistencia del interés:** {cons:.2f}")
                         st.write(f"- **Puntaje total (1-5):** {total:.2f} — **{level}**")
-                    except Exception:
-                        st.error("Error al procesar las respuestas. Recarga la página e inténtalo de nuevo.")
-                        st.code(traceback.format_exc())
 
-    # -- Panel administrativo --
-    elif menu == "Panel administrativo":
-        st.header("Panel administrativo")
-        pwd = st.text_input("Contraseña de administrador", type="password")
-        if pwd != ADMIN_PASSWORD:
-            st.warning("Introduce la contraseña correcta para ver los resultados.")
-            return
-
-        df = load_all_responses()
-        st.subheader("📊 Respuestas registradas")
-        st.write(f"Total respuestas: {len(df)}")
-
-        if len(df) == 0:
-            st.info("No hay respuestas todavía.")
-            return
-
-        # Mostrar tabla (sin columna id si existe)
-        to_show = df.copy()
-        if "id" in to_show.columns:
-            to_show = to_show.drop(columns=["id"])
-        st.dataframe(to_show.sort_values("timestamp", ascending=False))
-
-        # Estadísticas
-        st.subheader("📈 Estadísticas generales")
-        try:
-            stats = {
-                "Promedio Perseverancia": float(df["perseverance"].mean()),
-                "Promedio Consistencia": float(df["consistency"].mean()),
-                "Promedio Grit Total": float(df["grit_total"].mean())
-            }
-            st.write(pd.DataFrame.from_dict(stats, orient="index", columns=["Valor"]))
-        except Exception:
-            st.info("No se pudieron calcular estadísticas (datos insuficientes o formato inesperado).")
-
-        # Gráfico (boxplot) con Altair
-        try:
-            chart_df = df[["perseverance", "consistency", "grit_total"]].melt(var_name="Subescala", value_name="Valor")
-            chart = alt.Chart(chart_df).mark_boxplot().encode(x="Subescala:N", y="Valor:Q")
-            st.altair_chart(chart, use_container_width=True)
-        except Exception:
-            pass
-
-        # Descargar CSV
-        try:
-            csv = df.to_csv(index=False).encode('utf-8')
-            st.download_button("📥 Descargar todas las respuestas (CSV)", data=csv, file_name="todas_respuestas_grit.csv", mime="text/csv")
-        except Exception:
-            st.error("No se pudo generar el CSV para descarga.")
-
-
-if __name__ == "__main__":
-    main()
+                        pdf_buffer = generate_pdf(participant_id, email, answers, perc, cons, total, level)
+                        st.download_button(
+                            label="📄 Descargar reporte PDF

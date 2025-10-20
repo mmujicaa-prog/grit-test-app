@@ -4,8 +4,9 @@ import pandas as pd
 import sqlite3
 from datetime import datetime
 import altair as alt
-
 import os
+
+# ✅ En Streamlit Cloud, solo /tmp tiene permisos de escritura
 DB_PATH = os.path.join("/tmp", "grit_responses.db")
 
 ADMIN_PASSWORD = "admin"

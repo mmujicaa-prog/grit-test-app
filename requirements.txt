@@ -1,3 +1,7 @@
 streamlit>=1.20
 pandas
 altair
+streamlit
+pandas
+altair
+reportlab

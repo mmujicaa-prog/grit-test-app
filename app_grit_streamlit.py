@@ -223,3 +223,4 @@ def main():
                         pdf_buffer = generate_pdf(participant_id, email, answers, perc, cons, total, level)
                         st.download_button(
                             label="📄 Descargar reporte PDF
+

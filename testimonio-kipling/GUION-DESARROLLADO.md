@@ -52,8 +52,57 @@
 
 ---
 
-## ACTO II — EQUILIBRIO (Triunfo y Desastre)
-*Pendiente de tu vivencia.*
+## ACTO II — EQUILIBRIO: Triunfo y Desastre
+*Verso ancla: "Si puedes encontrarte con el Triunfo y el Desastre, y tratar igual a esos dos impostores..."*
+*Vivencia: Parque Arauco — el ascenso, la reestructuración, e independizarse para crear Ardatz.*
+
+**(Diapositiva: verso "dos impostores". Tono narrativo, energía media.)**
+
+> *"Si puedes encontrarte con el Triunfo y el Desastre, y tratar igual a esos dos impostores..."*
+>
+> "Impostores. Esa palabra me costó años entenderla. Dejadme contaros por qué."
+
+**(El Triunfo.)**
+
+> "Tras años aprendiendo de grandes jefes, me invitan a una gran compañía: Parque Arauco. Empresa en bolsa, recién capitalizada nada menos que por Sam Zell, el gurú inmobiliario norteamericano, con un plan de expansión por toda la región. Y me piden a mí que lidere esa expansión."
+>
+> "Era jugar en una liga de clase mundial. Y jugué. Los proyectos volaban, creábamos hitos urbanos, trataba a diario con la alta dirección. Se me abrían todas las puertas. Mi prestigio tocaba techo. Todo fluía."
+
+**(El precio oculto — sutil.)**
+
+> "El triunfo, eso sí, cobraba su precio en silencio: vivía más fuera de casa que dentro, la espalda empezó a pasarme factura, el estrés era brutal. Pero... ¿quién se queja cuando todo brilla?"
+
+**(El giro.)**
+
+> "Hasta que un día me avisan: el vicepresidente ejecutivo se va. Llega otro. Y en menos de seis meses, el nuevo decide reestructurar la compañía y desarmar, entera, el área de expansión. Mi área."
+>
+> "Me ofrecen dos caminos: seguir desde fuera, como externo, o quedarme dentro… en un puesto que era, claramente, un paso atrás."
+>
+> **(Pausa.)** "En ese minuto, todo se venía abajo. ¿Qué hago? ¿Cómo lo hago?"
+
+**(La decisión y la reconstrucción "con herramientas gastadas".)**
+
+> "Decidí independizarme. Montar mi propia empresa de servicios inmobiliarios de alta especialización."
+>
+> "Y ahí descubrí lo que de verdad significa reconstruir con las herramientas gastadas. Porque emprender es difícil… pero más difícil es domar el ego."
+>
+> "Mi antiguo equipo pasó a ser mi cliente. Cada vez que llegaba a las oficinas de Chile, de Perú, de Colombia, tenía que presentarme. Esperar a que me recibieran. Perseguir el pago de mis facturas."
+>
+> "Pasé de ser el jefe exitoso a un proveedor que tenía todo por demostrar. Y flotaba una pregunta razonable —que yo también me hacía—: «Miguel Mujica, fuera de Parque Arauco, ¿seguirá siendo el mismo profesional? Saber, sabe… pero con la marca y la estructura de la compañía detrás, todo cambia.»"
+
+**(La lección de los dos impostores.)**
+
+> "Entonces entendí a Kipling. El Triunfo me había hecho creer que aquel éxito era enteramente mío… cuando buena parte era de la institución. Y el Desastre quería convencerme de que, sin ella, no era nadie. Los dos mentían."
+>
+> "Mi nueva vida exigió humildad. Convencer en vez de ordenar. La soledad de no tener equipo. Ser, a la vez, el director general, el de operaciones, el comercial y el técnico."
+
+**(El desenlace.)**
+
+> "Trece años después, esa empresa —Ardatz— ha crecido y opera hoy en varios países."
+
+**(Cierre del acto — mirando al público.)**
+
+> "El triunfo y el desastre te dicen quién *crees* que eres. Pero ninguno de los dos dice la verdad. La verdad la escribes tú, después, con lo que decides reconstruir."
 
 ## ACTO III — RESILIENCIA (clímax)
 *Pendiente de tu vivencia.*

@@ -104,8 +104,59 @@
 
 > "El triunfo y el desastre te dicen quién *crees* que eres. Pero ninguno de los dos dice la verdad. La verdad la escribes tú, después, con lo que decides reconstruir."
 
-## ACTO III — RESILIENCIA (clímax)
-*Pendiente de tu vivencia.*
+## ACTO III — RESILIENCIA: la Voluntad *(clímax)*
+*Verso ancla: "Si puedes forzar el corazón, el nervio y el tendón... y resistir cuando ya nada te queda, salvo la Voluntad que dice: «¡Resistid!»"*
+*Vivencia: Madrid, la cirugía de columna y el diagnóstico de esclerosis múltiple.*
+
+**(Luz íntima, baja. En los momentos más duros, pantalla en negro: todo en tu voz.)**
+
+> *"Si puedes forzar el corazón, el nervio y el tendón a servirte mucho después de estar agotados, y resistir cuando ya nada te queda, salvo la Voluntad que dice: «¡Resistid!»..."*
+
+**(La cima.)**
+
+> "Salíamos de la pandemia y decidí dar otro salto: me llevo a la familia a Madrid, para abrir Ardatz a Europa. Ilusión nueva, una ciudad segura, calidad de vida, desafíos por delante. Una aventura fantástica."
+
+**(La deuda del cuerpo.)**
+
+> "Pero la huella de mi vida no me dejaba tranquilo. De joven jugué al rugby, y aquellas lesiones de disco llevaban treinta años esperando. Por fin llego a quirófano: me operan en Chile y me recupero en España."
+>
+> "Me dan el alta. Empiezo a reincorporarme al deporte con un equipo increíble. Pero a los tres meses no avanzo. Me mandan a hacer pruebas."
+
+**(El golpe.)**
+
+> "Llegan los resultados: lesiones en la mielina de mi columna."
+>
+> **(Pausa.)** "Esclerosis múltiple."
+
+**(Tu hermano — alivio y sentencia.)**
+
+> "Mi hermano, que es médico, intenta consolarme: «Lo bueno es que esto no mata» —pensando, por ejemplo, en un cáncer. Y es verdad: no mata. Pero es neurodegenerativa. La calidad de vida se va deteriorando, poco a poco."
+>
+> "Tenía cuarenta y nueve años. Y sentí que empezaba el segundo tiempo de mi vida."
+
+**(El fondo del pozo — la pérdida de control. Lo más íntimo.)**
+
+> "Entender la enfermedad me llevó tiempo. Pronto supe que no era ELA, sí. Pero saber que llevas dentro algo que ataca tu sistema nervioso central… y que no avisa: eso fue lo que más me costó sobrellevar."
+>
+> "Porque yo, toda mi vida, he sido un hombre de planes. Planificar. Ejecutar lo planificado. Aprender de lo vivido. Y si algo cambiaba, reaccionar rápido y volver a planificar."
+>
+> **(Pausa.)** "Y de golpe, con la esclerosis, nada —nada— estaba bajo mi control. Solo me quedaba confiar. Y esperar que mi equipo médico tomara, por mí, las decisiones que yo siempre había tomado solo."
+
+**(El duelo compartido.)**
+
+> "El duelo de una enfermedad así es largo. Empieza en uno mismo. Pero pronto entiendes que tu familia, tus amigos, la gente que trabaja contigo… también están viviendo el suyo."
+
+**(La chispa — la Voluntad. La metáfora de las velas.)**
+
+> "Y aun así, la vida continúa. Hoy, con un buen tratamiento que frena la enfermedad, he vuelto a ser el protagonista de mi propia vida. Y aprendí algo que no estaba en ninguno de mis planes: que no puedo controlar el viento… pero sí puedo ajustar las velas cuando cambian las condiciones."
+
+**(La transformación — el "para qué", puente al Acto IV. Pausa larga después.)**
+
+> "Y entonces la pregunta cambió. Ya no era «¿cuánto voy a vivir?». Era otra, mucho más importante: «¿Cómo quiero vivir? ¿Con quién? ¿Dónde? Y, por encima de todo… ¿para qué?»"
+
+> 🔗 **Hilos que cierran círculo:** el rugby de la juventud → el "segundo tiempo" a los 49;
+> el "hombre de planes" → "no controlo el viento, pero ajusto las velas".
+> El "¿para qué?" es el puente directo al Acto IV (integridad y propósito).
 
 ## ACTO IV — INTEGRIDAD
 *Pendiente de tu vivencia.*

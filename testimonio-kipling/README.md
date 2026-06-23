@@ -11,7 +11,8 @@ recitando el poema (subtítulos en español).
 | [`00-PLAN-Y-ANALISIS.md`](00-PLAN-Y-ANALISIS.md) | Análisis del encargo, estructura general y mejores prácticas de storytelling/TED. **Empieza aquí.** |
 | [`01-MAPA-VERSO-EXPERIENCIA.md`](01-MAPA-VERSO-EXPERIENCIA.md) | El poema verso a verso + preguntas para anclar tus vivencias. **Aquí pones tus historias.** |
 | [`02-GUION-TED.md`](02-GUION-TED.md) | Esqueleto del guion palabra por palabra, con huecos `[...]`. |
-| [`03-STORYBOARD-DIAPOSITIVAS.md`](03-STORYBOARD-DIAPOSITIVAS.md) | Diapositiva a diapositiva: qué mostrar y qué decir. |
+| [`03-STORYBOARD-DIAPOSITIVAS.md`](03-STORYBOARD-DIAPOSITIVAS.md) | Storyboard genérico (plantilla de referencia). |
+| [`05-STORYBOARD-A-MEDIDA.md`](05-STORYBOARD-A-MEDIDA.md) | **Storyboard a medida**, slide a slide, con tus historias y materiales. |
 | [`04-GUIA-ORATORIA.md`](04-GUIA-ORATORIA.md) | Ritmo, voz, cuerpo, ensayo y montaje del vídeo final. |
 
 ## Los 4 actos (hilo del poema)

@@ -6,6 +6,37 @@
 
 ---
 
+## HOOK — Apertura
+*Técnica: in medias res. La escena más cargada, congelada en la puerta, sin contexto.*
+
+**(Escenario a oscuras. Pantalla en negro. Solo tu voz.)**
+
+> "Hay una puerta. Y detrás de ella, mi familia espera. Felices. Aguardando que yo salga con dos buenas noticias: acaban de nacer mis mellizos."
+
+**(Pausa.)**
+
+> "Pero de este lado de la puerta, yo acabo de ver cómo un equipo de médicos se lanzaba sobre mi segundo hijo. Azul. Inerte. Peleando por devolverlo a la vida."
+
+**(Pausa. Más lento.)**
+
+> "Y ahora tengo que poner la mano en el pomo… y salir a dar calma. A contener a todos. Mientras por dentro me estoy muriendo."
+
+**(Silencio. 3 segundos.)**
+
+> "Tenía que mantener la cabeza cuando todo —dentro de mí— se derrumbaba. Lo que yo no sabía entonces… es que un poema escrito hace más de cien años ya me había explicado cómo."
+
+## PROMESA
+
+**(Sube una luz suave. Apareces. Diapositiva: el título, *If —*.)**
+
+> "Me llamo Miguel Mujica. Y durante años llevé un poema en el bolsillo. No es mío: lo escribió Rudyard Kipling hace más de un siglo, para su hijo. Se llama *If* — *Si*."
+>
+> "Yo no lo leí como literatura. Lo leí como un mapa. Cada vez que la vida me ponía a prueba, una de sus líneas me decía qué clase de hombre tenía que ser para salir adelante."
+>
+> "Hoy quiero contaros mi historia a través de ese mapa. Cuatro pruebas. Cuatro versos. Y al final, dejaré que un hombre os lea el poema entero, mucho mejor de lo que yo podría hacerlo. Empecemos por esa puerta."
+
+---
+
 ## ACTO I — SERENIDAD
 *Verso ancla: "Si puedes mantener la cabeza cuando todos a tu alrededor la pierden y te culpan a ti..."*
 *Vivencia: el nacimiento de los mellizos — Iñaki nace sin respirar.*
@@ -16,7 +47,7 @@
 
 **(Pausa. 2 segundos.)**
 
-> "Sala de partos. Nace mi primer hijo. Llora. Respira. Está vivo, está perfecto. Y por un instante el mundo es exactamente como lo había soñado."
+> "Volvamos a esa sala de partos. Nace mi primer hijo. Llora. Respira. Está vivo, está perfecto. Y por un instante el mundo es exactamente como lo había soñado."
 >
 > "Pero esperábamos mellizos. Detrás venía el segundo."
 
@@ -32,11 +63,11 @@
 
 > "Y yo sabía algo que no podía probar. Lo intuía: aquello quizá podría haberse evitado. Algo se había retrasado más de la cuenta. Sentí subir la rabia... pero ese no era el momento de la rabia."
 
-**(El núcleo del acto — la decisión.)**
+**(El núcleo del acto — la decisión. Payoff del hook: cruzamos la puerta.)**
 
-> "Porque al otro lado de la puerta esperaba mi familia. Felices. Aguardando dos buenas noticias. Y me tocaba a mí salir y contarles lo de Iñaki."
+> "Y así llegué a aquella puerta del principio. Detrás esperaba mi familia, feliz, aguardando dos buenas noticias. Y me tocaba a mí salir y contarles lo de Iñaki."
 >
-> "Era el minuto de dar calma. De contener. De sostener a todos los demás... mientras yo me moría por dentro."
+> "Era el minuto de dar calma. De contener. De sostener a todos los demás… mientras yo me moría por dentro. Salí. Di la calma. Y solo cuando todos estuvieron tranquilos, me permití temblar."
 
 **(Desenlace, sobrio.)**
 
@@ -48,7 +79,7 @@
 
 > 🔗 **Semilla para el Acto IV:** la frase "era el minuto de dar calma" se recoge al
 > llegar al verso "llenar el implacable minuto". Callback emocional que cierra el círculo.
-> 🎣 **Nota:** esta escena puede usarse también como HOOK de apertura (primeros 45 s, sin contexto).
+> 🎣 **Payoff del hook:** la puerta que se congela en la apertura se cruza aquí.
 
 ---
 

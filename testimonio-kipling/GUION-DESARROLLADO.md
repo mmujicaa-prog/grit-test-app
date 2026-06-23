@@ -158,5 +158,58 @@
 > el "hombre de planes" → "no controlo el viento, pero ajusto las velas".
 > El "¿para qué?" es el puente directo al Acto IV (integridad y propósito).
 
-## ACTO IV — INTEGRIDAD
-*Pendiente de tu vivencia.*
+## ACTO IV — INTEGRIDAD Y PROPÓSITO
+*Verso ancla: "Si puedes hablar con multitudes sin perder la virtud, o caminar con reyes sin perder el trato sencillo... si puedes llenar el implacable minuto..."*
+*Síntesis: ser protagonista de la vida; la meta es el camino.*
+
+**(Luz cálida, abierta. Cercano.)**
+
+> *"Si puedes hablar con multitudes sin perder la virtud, o caminar con reyes sin perder el trato sencillo… si puedes llenar el implacable minuto con sesenta segundos de esfuerzo cumplido…"*
+
+**(Reyes y trato sencillo — vivido literalmente.)**
+
+> "He caminado con reyes: me he sentado con la alta dirección, he tratado con gurús de los negocios. Y también he esperado, de pie, en una recepción, a que un antiguo colaborador me recibiera. Os confieso una cosa: aprendí más en la sala de espera."
+
+**(Callback del "minuto" — recoge la semilla del Acto I.)**
+
+> "¿Recordáis aquel minuto en la sala de partos? El minuto en que tuve que dar calma mientras me moría por dentro. Kipling lo llama «el implacable minuto». La vida entera está hecha de minutos así. Y la pregunta ya no es cuántos me quedan. Es con cuántos segundos de verdad los lleno."
+
+**(La transformación — el "para qué".)**
+
+> "Yo fui un hombre de planes. Planificaba cada paso para llegar a un punto: el cargo, el proyecto, la meta siguiente. Y la vida me enseñó —a golpes— la lección que más me costó aprender: que tanto planificar era para alcanzar un destino… cuando lo que de verdad importa es la travesía."
+>
+> "Hoy tengo claro mi para qué. Quiero ser el protagonista de mi vida; no el espectador de mi enfermedad ni de mis circunstancias. ¿Con quién? Con los míos —los mismos que estuvieron al otro lado de aquella puerta, los que vivieron su propio duelo a mi lado—. ¿Para qué? Para recorrer el camino, no para coleccionar metas."
+
+---
+
+## RECAPITULACIÓN
+
+**(Diapositiva: las cuatro palabras apareciendo en cascada: Serenidad · Equilibrio · Resiliencia · Integridad.)**
+
+> "Cuatro versos. Cuatro pruebas. **Serenidad** cuando todo arde. **Equilibrio** ante el triunfo y el desastre. **Resistir** cuando no queda nada. E **integridad** para elegir, cada día, quién quiero ser."
+>
+> "Kipling no escribió una lista de logros. Escribió una lista de decisiones. Treinta y un versos diciéndote «si puedes…» —el camino— para una sola línea de premio al final. Hasta el poema sabe que la meta… es el camino."
+
+**(Idea-fuerza — la frase que el público se lleva a casa.)**
+
+> "Así que esto es lo que me gustaría que os llevarais: **la meta nunca fue el destino. La meta es el camino. Y de ti depende ser su protagonista.**"
+
+---
+
+## CIERRE — Vídeo de Michael Caine
+
+**(Te apartas un paso. Voz íntima.)**
+
+> "Os dije que dejaría que alguien os leyera el poema entero. Hay un hombre que lo dice mejor que yo. Escuchadlo."
+
+**(Silencio. Vídeo de Michael Caine recitando *If—*, subtítulos en español — ver carpeta `video/`. No hablas. Miras la pantalla con el público.)**
+
+---
+
+## FRASE FINAL
+
+**(El vídeo termina. 2-3 segundos de silencio total.)**
+
+> "Aquel segundo hijo que nació azul… Iñaki… hoy camina a mi lado. Con sus secuelas, sí. Pero camina. Y cada paso suyo me recuerda que la meta siempre fue esta: el camino. Juntos."
+>
+> **(Pausa.)** "Gracias."

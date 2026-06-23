@@ -1,8 +1,9 @@
 # Guion desarrollado · charla testimonio *If—*
-## (Versión que vamos construyendo acto a acto con tus vivencias reales)
+## Guion completo · 4 actos sobre las estrofas de *If—* · cierre con Michael Caine
 
-> Este documento contiene el guion DEFINITIVO, palabra por palabra, a medida
-> que vas aportando tus experiencias. El esqueleto general está en `02-GUION-TED.md`.
+> Charla tipo TED (15-20 min). Guion definitivo, palabra por palabra.
+> Las **(acotaciones)** son indicaciones de escena, voz y diapositiva.
+> El esqueleto y la estructura general están en `02-GUION-TED.md`.
 
 ---
 
@@ -61,7 +62,7 @@
 
 **(Tensión: lo que sabías.)**
 
-> "Y yo sabía algo que no podía probar. Lo intuía: aquello quizá podría haberse evitado. Algo se había retrasado más de la cuenta. Sentí subir la rabia... pero ese no era el momento de la rabia."
+> "Y yo sabía algo que no podía probar. Lo intuía: aquello quizá podría haberse evitado. Algo se había retrasado más de la cuenta. Sentí subir la rabia… pero ese no era el momento de la rabia."
 
 **(El núcleo del acto — la decisión. Payoff del hook: cruzamos la puerta.)**
 
@@ -101,7 +102,7 @@
 
 **(El precio oculto — sutil.)**
 
-> "El triunfo, eso sí, cobraba su precio en silencio: vivía más fuera de casa que dentro, la espalda empezó a pasarme factura, el estrés era brutal. Pero... ¿quién se queja cuando todo brilla?"
+> "El triunfo, eso sí, cobraba su precio en silencio: vivía más fuera de casa que dentro, la espalda empezó a pasarme factura, el estrés era brutal. Pero… ¿quién se queja cuando todo brilla?"
 
 **(El giro.)**
 
@@ -135,6 +136,8 @@
 
 > "El triunfo y el desastre te dicen quién *crees* que eres. Pero ninguno de los dos dice la verdad. La verdad la escribes tú, después, con lo que decides reconstruir."
 
+---
+
 ## ACTO III — RESILIENCIA: la Voluntad *(clímax)*
 *Verso ancla: "Si puedes forzar el corazón, el nervio y el tendón... y resistir cuando ya nada te queda, salvo la Voluntad que dice: «¡Resistid!»"*
 *Vivencia: Madrid, la cirugía de columna y el diagnóstico de esclerosis múltiple.*
@@ -167,7 +170,7 @@
 
 **(El fondo del pozo — la pérdida de control. Lo más íntimo.)**
 
-> "Entender la enfermedad me llevó tiempo. Pronto supe que no era ELA, sí. Pero saber que llevas dentro algo que ataca tu sistema nervioso central… y que no avisa: eso fue lo que más me costó sobrellevar."
+> "Entender la enfermedad me llevó tiempo. Pronto supe que no era ELA, y eso —dentro de todo— fue un alivio. Pero saber que llevas dentro algo que ataca tu sistema nervioso central… y que no avisa: eso fue lo que más me costó sobrellevar."
 >
 > "Porque yo, toda mi vida, he sido un hombre de planes. Planificar. Ejecutar lo planificado. Aprender de lo vivido. Y si algo cambiaba, reaccionar rápido y volver a planificar."
 >
@@ -188,6 +191,8 @@
 > 🔗 **Hilos que cierran círculo:** el rugby de la juventud → el "segundo tiempo" a los 49;
 > el "hombre de planes" → "no controlo el viento, pero ajusto las velas".
 > El "¿para qué?" es el puente directo al Acto IV (integridad y propósito).
+
+---
 
 ## ACTO IV — INTEGRIDAD Y PROPÓSITO
 *Verso ancla: "Si puedes hablar con multitudes sin perder la virtud, o caminar con reyes sin perder el trato sencillo... si puedes llenar el implacable minuto..."*
@@ -219,7 +224,7 @@
 
 > "Cuatro versos. Cuatro pruebas. **Serenidad** cuando todo arde. **Equilibrio** ante el triunfo y el desastre. **Resistir** cuando no queda nada. E **integridad** para elegir, cada día, quién quiero ser."
 >
-> "Kipling no escribió una lista de logros. Escribió una lista de decisiones. Treinta y un versos diciéndote «si puedes…» —el camino— para una sola línea de premio al final. Hasta el poema sabe que la meta… es el camino."
+> "Kipling no escribió una lista de logros. Escribió una lista de decisiones. Casi todo el poema es un «si puedes…» —el camino—, y solo el final es la recompensa. Hasta Kipling lo sabía: la meta… es el camino."
 
 **(Idea-fuerza — la frase que el público se lleva a casa.)**
 

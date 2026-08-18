@@ -1,0 +1,3 @@
+PyYAML>=6.0
+# Opcional: acelera la lectura de padrones .xlsx. Sin él se usa tools/xlsx_lite.py.
+openpyxl>=3.1

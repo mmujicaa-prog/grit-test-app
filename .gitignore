@@ -1,0 +1,21 @@
+# --- Datos de inversores -------------------------------------------------
+# ESTE REPOSITORIO ES PUBLICO. Ningun dato real de inversores puede
+# versionarse aqui: nombres, correos, montos, participaciones y los cuerpos
+# de los correos son informacion confidencial.
+#
+# Solo se versiona el material ficticio de demostracion.
+
+andy_garden/datos/*
+!andy_garden/datos/LEEME.md
+!andy_garden/datos/padron_ejemplo.csv
+
+andy_garden/paquetes/*
+!andy_garden/paquetes/2026-08-avance-obra/
+
+# Bitacora de borradores creados: contiene destinatarios reales.
+andy_garden/bitacora.jsonl
+
+# --- Habituales ----------------------------------------------------------
+__pycache__/
+*.pyc
+.DS_Store

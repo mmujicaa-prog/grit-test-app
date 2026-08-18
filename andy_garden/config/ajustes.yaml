@@ -1,0 +1,36 @@
+# Ajustes del sistema de comunicaciones a inversores de Andy Garden.
+# Todo lo que cambia entre proyectos o con el tiempo vive aqui, no en el codigo.
+
+proyecto: Andy Garden
+
+# Cuenta desde la que se crean los borradores. Los borradores quedan en la
+# carpeta Borradores de esta cuenta; el envio siempre lo haces tu, a mano.
+remitente: mm@ardatz.com
+
+padron:
+  # Ruta o id de Drive del padron de inversores. Se completa cuando el padron
+  # este listo (Fase 2). Puede ser:
+  #   - un id de Google Sheet  -> "sheet:1AbC..."
+  #   - un id de archivo Drive -> "drive:1AbC..."
+  #   - una ruta local         -> "datos/padron.xlsx"
+  ruta: "datos/padron_ejemplo.csv"
+  hoja: ""          # nombre de la pestana, si el archivo tiene varias
+  solo_activos: true  # excluye a los inversores en estado pausado o salido
+
+adjuntos:
+  # Gmail limita el mensaje completo a 25 MB, pero los adjuntos viajan
+  # codificados en base64 y crecen aproximadamente un tercio. Por eso el tope
+  # util sobre el archivo original ronda los 18 MB.
+  limite_mb: 18
+  carpeta_drive_id: "1ks6t6WnXXxR5srakVTUHP6WhIaueqI2W"  # carpeta "Andy Garden" en Drive
+
+drive:
+  # Carpeta donde el agente deja la hoja espejo de cada paquete de envio.
+  carpeta_paquetes_id: ""
+
+firma_html: |
+  <p style="margin:24px 0 0;color:#5b6472;font-size:13px;line-height:1.6">
+    Un cordial saludo,<br>
+    <strong style="color:#1f2733">Ardatz</strong><br>
+    Andy Garden
+  </p>

@@ -1,0 +1,6 @@
+Padrón de inversores — Andy Garden (EJEMPLO, datos ficticios),,,,,,,,,,,
+,,,,,,,,,,,
+ID Inversor,Nombre completo,Tratamiento,Correo electrónico,En copia,Copia oculta,Monto comprometido,Moneda,Participación,Fecha de ingreso,Tramo,Estado,Idioma,Observaciones
+INV-001,Ana Ficticia Ruiz,Estimada,ana.ficticia@ejemplo.test,asesor.ana@ejemplo.test; gestoria@ejemplo.test,,250000,EUR,"12,5%",14/04/2026,Serie A,Activo,es,Prefiere resúmenes breves
+INV-002,Grupo Ejemplo S.L.,Estimados,contacto@grupoejemplo.test,Luis Ficticio <luis@grupoejemplo.test>,control@grupoejemplo.test,480000,EUR,"24,0%",2026-05-02,Serie A,Activo,es,Requiere copia al área de control
+INV-003,Pedro Prueba Soto,Estimado,pedro.prueba@ejemplo.test,,,120000,EUR,"6,0%",01/06/2026,Serie B,Salido,es,Salió del vehículo en julio

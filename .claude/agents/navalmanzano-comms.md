@@ -129,6 +129,20 @@ copias, asunto y adjuntos. Es la última oportunidad de detectar una copia equiv
 
 ### 5. Adjuntos
 
+El operador puede proporcionarte el archivo de dos formas:
+
+**A) Ruta local** (el archivo ya está en el sistema de archivos):
+
+```bash
+# Obtener base64 del archivo
+python3 -c "import base64,pathlib; print(base64.b64encode(pathlib.Path('/ruta/archivo.pdf').read_bytes()).decode())"
+```
+
+Usa ese resultado como `content` en `attachments` al llamar a `create_draft`. No necesitas
+`adjuntar` de la CLI en este caso — pasa el adjunto directamente al crear el borrador.
+
+**B) Archivo en Drive** (el operador da un Drive ID o lo localizas con `search_files`):
+
 Localiza el archivo en Drive (`search_files`), consulta su tamaño con `get_file_metadata` y
 asócialo:
 
@@ -137,6 +151,11 @@ python3 navalmanzano/tools/ag.py adjuntar <id> \
   --nombre "Informe_avance_septiembre.pdf" \
   --drive-file-id "1AbC..." --tamano-bytes 2410233 --inversor INV-001
 ```
+
+Descárgalo con `mcp__Google_Drive__download_file_content` (devuelve base64 directamente)
+y úsalo como `content` en `attachments`.
+
+---
 
 El tope de `ajustes.yaml` (18 MB por defecto) es deliberadamente inferior a los 25 MB de
 Gmail, porque el adjunto viaja codificado en base64 y crece cerca de un tercio. Si un

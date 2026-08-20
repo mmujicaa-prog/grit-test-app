@@ -34,6 +34,16 @@ _orig_destinatarios = _ag.mod_padron.destinatarios
 
 def _destinatarios_con_copias_fijas(inversor):
     destinos = _orig_destinatarios(inversor)
+
+    # Añadir emails adicionales de To desde la columna extras del padrón
+    emails_to_extra = inversor.extras.get("emails_to_adicionales", "")
+    if emails_to_extra:
+        ya_en_to = {e.lower() for e in destinos["to"]}
+        for raw in _ag.mod_padron.separar_emails(emails_to_extra):
+            if raw.lower() not in ya_en_to:
+                destinos["to"].append(raw)
+                ya_en_to.add(raw.lower())
+
     ajustes = _ag.cargar_ajustes()
     copias_fijas = ajustes.get("copias_fijas") or []
     usados = {d.lower() for d in destinos["to"] + destinos["cc"] + destinos["bcc"]}

@@ -19,10 +19,13 @@ if str(_tools_ag) not in sys.path:
     sys.path.insert(0, str(_tools_ag))
 
 import ag as _ag  # noqa: E402
+import plantillas as _mod_plantillas  # noqa: E402
 
-# Redirigir RAIZ y RUTA_AJUSTES a este proyecto
+# Redirigir RAIZ, RUTA_AJUSTES y directorio de paquetes a este proyecto
 _ag.RAIZ = RAIZ
 _ag.RUTA_AJUSTES = RAIZ / "config" / "ajustes.yaml"
+_ag.mod_paquete.DIRECTORIO_PAQUETES = RAIZ / "paquetes"
+_mod_plantillas.DIRECTORIO_PLANTILLAS = RAIZ / "config" / "plantillas"
 
 # Inyectar copias_fijas de ajustes.yaml en cada envio.
 # Se añaden al CC deduplicando contra To/CC/BCC ya presentes.

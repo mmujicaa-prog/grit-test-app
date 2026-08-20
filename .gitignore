@@ -24,6 +24,16 @@ navalmanzano/paquetes/*
 # Bitacora de borradores creados: contiene destinatarios reales.
 navalmanzano/bitacora.jsonl
 
+ad/datos/*
+!ad/datos/LEEME.md
+!ad/datos/padron_ejemplo.csv
+
+ad/paquetes/*
+!ad/paquetes/.gitkeep
+
+# Bitacora de borradores creados: contiene destinatarios reales.
+ad/bitacora.jsonl
+
 # --- Habituales ----------------------------------------------------------
 __pycache__/
 *.pyc

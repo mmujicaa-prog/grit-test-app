@@ -1,0 +1,41 @@
+# Ajustes del sistema de comunicaciones a inversores de Agnessa Dom (AD).
+# Todo lo que cambia entre proyectos o con el tiempo vive aqui, no en el codigo.
+
+proyecto: "Agnessa Dom"
+
+# Cuenta desde la que se crean los borradores. Los borradores quedan en la
+# carpeta Borradores de esta cuenta; el envio siempre lo haces tu, a mano.
+remitente: mm@ardatz.com
+
+padron:
+  # Ruta o id de Drive del padron de inversores. Se completa cuando el padron
+  # este listo. Puede ser:
+  #   - un id de Google Sheet  -> "sheet:1AbC..."
+  #   - un id de archivo Drive -> "drive:1AbC..."
+  #   - una ruta local         -> "datos/padron.csv"
+  ruta: "datos/padron.csv"
+  hoja: "Hoja1"
+  solo_activos: true  # excluye a los inversores en estado pausado o salido
+
+# Direcciones que van en copia en todos los envios, independientemente del
+# inversor. Se añaden al CC deduplicando contra To/CC/BCC ya existentes.
+copias_fijas:
+  - hg@ardatz.com
+  - cb@ardatz.com
+
+adjuntos:
+  # Gmail limita el mensaje completo a 25 MB, pero los adjuntos viajan
+  # codificados en base64 y crecen aproximadamente un tercio. Por eso el tope
+  # util sobre el archivo original ronda los 18 MB.
+  limite_mb: 18
+  carpeta_drive_id: ""  # ID de la carpeta Drive de adjuntos (completar)
+
+drive:
+  # Carpeta donde el agente deja la hoja espejo de cada paquete de envio.
+  carpeta_paquetes_id: ""  # ID de la carpeta Drive de paquetes (completar)
+
+firma_html: |
+  <p style="margin:24px 0 0;color:#5b6472;font-size:13px;line-height:1.6">
+    Un cordial saludo,<br>
+    <strong style="color:#1f2733">Miguel Mujica Arriagada</strong>
+  </p>

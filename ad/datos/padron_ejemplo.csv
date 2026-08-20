@@ -1,0 +1,4 @@
+id_inversor,nombre,sociedad_inversora,nombre_corto,tratamiento,email_principal,emails_copia,emails_to_adicionales,idioma
+INV-001,Ana Ficticia Ruiz,,Ana,Estimada,ana.ficticia@ejemplo.test,"asesor.ana@ejemplo.test; gestoria@ejemplo.test",,es
+INV-002,Grupo Ejemplo S.L.,Grupo Ejemplo S.L.,Grupo Ejemplo,Estimados,contacto@grupoejemplo.test,"Luis Ficticio <luis@grupoejemplo.test>","socio@grupoejemplo.test",es
+INV-003,Pedro Prueba Soto,,Pedro,Estimado,pedro.prueba@ejemplo.test,,,es

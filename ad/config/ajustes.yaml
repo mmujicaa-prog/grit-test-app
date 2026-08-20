@@ -13,8 +13,10 @@ padron:
   #   - un id de Google Sheet  -> "sheet:1AbC..."
   #   - un id de archivo Drive -> "drive:1AbC..."
   #   - una ruta local         -> "datos/padron.csv"
-  ruta: "datos/padron.csv"
-  hoja: "Hoja1"
+  # CSV formateado con columnas estándar (descargado de XLSX original):
+  # H:\Unidades compartidas\Ardatz - C.Compartida\00. Inversiones en Curso\2. Oviedo-GS-Agnessa\0. CC Inv
+  ruta: "drive:1oTN90fgwTL2vgBoOP57UgmyqkXbC90fG"
+  hoja: null
   solo_activos: true  # excluye a los inversores en estado pausado o salido
 
 # Direcciones que van en copia en todos los envios, independientemente del
@@ -28,11 +30,11 @@ adjuntos:
   # codificados en base64 y crecen aproximadamente un tercio. Por eso el tope
   # util sobre el archivo original ronda los 18 MB.
   limite_mb: 18
-  carpeta_drive_id: ""  # ID de la carpeta Drive de adjuntos (completar)
+  carpeta_drive_id: "1KHdbrx6K5vKY1ipClDXjo8l5mvdcjAG7"
 
 drive:
-  # Carpeta donde el agente deja la hoja espejo de cada paquete de envio.
-  carpeta_paquetes_id: ""  # ID de la carpeta Drive de paquetes (completar)
+  # Carpeta "0. CC Inv" en Drive → compartida\Ardatz\00. Inversiones\2. Oviedo-GS-Agnessa\0. CC Inv
+  carpeta_paquetes_id: "1KHdbrx6K5vKY1ipClDXjo8l5mvdcjAG7"
 
 firma_html: |
   <p style="margin:24px 0 0;color:#5b6472;font-size:13px;line-height:1.6">

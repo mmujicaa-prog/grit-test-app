@@ -13,7 +13,7 @@ padron:
   #   - un id de Google Sheet  -> "sheet:1AbC..."
   #   - un id de archivo Drive -> "drive:1AbC..."
   #   - una ruta local         -> "datos/padron.xlsx"
-  ruta: "datos/padron_ejemplo.csv"
+  ruta: "drive:1Yq8wcogQqtXnFJ14DkUkjSnxvx6S2nTnxpfh-HLZqMU"
   hoja: ""          # nombre de la pestana, si el archivo tiene varias
   solo_activos: true  # excluye a los inversores en estado pausado o salido
 

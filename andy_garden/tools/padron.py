@@ -131,7 +131,8 @@ class Inversor:
             "idioma": self.idioma,
             "notas": self.notas,
             "primer_nombre": self.nombre.split()[0] if self.nombre.split() else self.nombre,
-            "saludo": (self.tratamiento or "Estimado/a").strip() + " " + self.nombre,
+            "saludo": (self.tratamiento or "Estimado/a").strip() + " "
+                      + (self.extras.get("nombre_corto") or self.nombre.split()[0] if self.nombre.split() else self.nombre),
         }
         campos.update(self.extras)
         return campos

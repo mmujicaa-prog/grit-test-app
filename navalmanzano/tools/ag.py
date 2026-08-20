@@ -24,5 +24,22 @@ import ag as _ag  # noqa: E402
 _ag.RAIZ = RAIZ
 _ag.RUTA_AJUSTES = RAIZ / "config" / "ajustes.yaml"
 
+# Inyectar copias_fijas de ajustes.yaml en cada envio.
+# Se añaden al CC deduplicando contra To/CC/BCC ya presentes.
+_orig_destinatarios = _ag.mod_padron.destinatarios
+
+
+def _destinatarios_con_copias_fijas(inversor):
+    destinos = _orig_destinatarios(inversor)
+    ajustes = _ag.cargar_ajustes()
+    copias_fijas = ajustes.get("copias_fijas") or []
+    usados = {d.lower() for d in destinos["to"] + destinos["cc"] + destinos["bcc"]}
+    extras = [c for c in copias_fijas if c.lower() not in usados]
+    destinos["cc"] = destinos["cc"] + extras
+    return destinos
+
+
+_ag.mod_padron.destinatarios = _destinatarios_con_copias_fijas
+
 if __name__ == "__main__":
     _ag.main()

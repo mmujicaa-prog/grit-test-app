@@ -17,6 +17,12 @@ padron:
   hoja: ""          # nombre de la pestana, si el archivo tiene varias
   solo_activos: true  # excluye a los inversores en estado pausado o salido
 
+# Direcciones que van en copia en todos los envios, independientemente del
+# inversor. Se añaden al CC deduplicando contra To/CC/BCC ya existentes.
+copias_fijas:
+  - hg@ardatz.com
+  - cb@ardatz.com
+
 adjuntos:
   # Gmail limita el mensaje completo a 25 MB, pero los adjuntos viajan
   # codificados en base64 y crecen aproximadamente un tercio. Por eso el tope

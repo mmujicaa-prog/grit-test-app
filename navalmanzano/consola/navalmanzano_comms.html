@@ -1,0 +1,1133 @@
+<title>Consola Navalmanzano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600&display=swap">
+
+<style>
+  :root {
+    --ground: #f6f4f1;
+    --surface: #ffffff;
+    --surface-hunde: #eeeae4;
+    --ink: #231f1a;
+    --ink-medio: #5a5049;
+    --ink-suave: #7d7268;
+    --linea: #e2dbd1;
+    --linea-fuerte: #cec5b8;
+    --acento: #7a4c28;
+    --acento-hondo: #5a3018;
+    --acento-tenue: #f5ebe3;
+    --estado-hecho: #2d5f7a;
+    --estado-hecho-tenue: #e4edf2;
+    --estado-alerta: #8f5f10;
+    --estado-alerta-tenue: #f6eddc;
+    --estado-stop: #a33a2c;
+    --estado-stop-tenue: #f8e7e4;
+    --sombra: 0 1px 2px rgba(35, 31, 26, .06), 0 8px 24px -16px rgba(35, 31, 26, .28);
+    --radio: 8px;
+    --paso: 4px;
+    --serif: "Fraunces", Georgia, "Times New Roman", serif;
+    --sans: "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #171310;
+      --surface: #1f1a16;
+      --surface-hunde: #28221c;
+      --ink: #ede8e2;
+      --ink-medio: #b2a898;
+      --ink-suave: #877d72;
+      --linea: #332c25;
+      --linea-fuerte: #433830;
+      --acento: #c49066;
+      --acento-hondo: #d8ae88;
+      --acento-tenue: #2e1f12;
+      --estado-hecho: #7fb0cd;
+      --estado-hecho-tenue: #1a262e;
+      --estado-alerta: #d3a459;
+      --estado-alerta-tenue: #2c2517;
+      --estado-stop: #dd8878;
+      --estado-stop-tenue: #2e1d19;
+      --sombra: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -16px rgba(0, 0, 0, .7);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground: #171310;
+    --surface: #1f1a16;
+    --surface-hunde: #28221c;
+    --ink: #ede8e2;
+    --ink-medio: #b2a898;
+    --ink-suave: #877d72;
+    --linea: #332c25;
+    --linea-fuerte: #433830;
+    --acento: #c49066;
+    --acento-hondo: #d8ae88;
+    --acento-tenue: #2e1f12;
+    --estado-hecho: #7fb0cd;
+    --estado-hecho-tenue: #1a262e;
+    --estado-alerta: #d3a459;
+    --estado-alerta-tenue: #2c2517;
+    --estado-stop: #dd8878;
+    --estado-stop-tenue: #2e1d19;
+    --sombra: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -16px rgba(0, 0, 0, .7);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font: 400 15px/1.55 var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  button, input, textarea, select { font: inherit; color: inherit; }
+
+  :focus-visible {
+    outline: 2px solid var(--acento);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
+
+  /* --- Estructura ------------------------------------------------------ */
+  .app {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 20px 20px 56px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .barra {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--linea);
+  }
+
+  .marca { display: flex; flex-direction: column; gap: 2px; margin-right: auto; }
+
+  .marca strong {
+    font: 600 22px/1.1 var(--serif);
+    letter-spacing: -.01em;
+  }
+
+  .marca span {
+    font: 500 11px/1.3 var(--sans);
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--ink-suave);
+  }
+
+  .pestanas { display: flex; gap: 2px; background: var(--surface-hunde); padding: 3px; border-radius: var(--radio); }
+
+  .pestanas button {
+    border: 0;
+    background: transparent;
+    padding: 7px 15px;
+    border-radius: 6px;
+    font-weight: 500;
+    color: var(--ink-medio);
+    cursor: pointer;
+  }
+
+  .pestanas button[aria-selected="true"] {
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: var(--sombra);
+  }
+
+  .acciones { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  .boton {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border: 1px solid var(--linea-fuerte);
+    background: var(--surface);
+    color: var(--ink);
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .boton:hover { border-color: var(--acento); color: var(--acento-hondo); }
+  .boton[disabled] { opacity: .45; cursor: not-allowed; border-color: var(--linea); color: var(--ink-suave); }
+  .boton[disabled]:hover { border-color: var(--linea); color: var(--ink-suave); }
+
+  .boton--fuerte {
+    background: var(--acento);
+    border-color: var(--acento);
+    color: #fff;
+  }
+
+  .boton--fuerte:hover { background: var(--acento-hondo); border-color: var(--acento-hondo); color: #fff; }
+  :root[data-theme="dark"] .boton--fuerte,
+  .boton--fuerte { color: #fff; }
+
+  /* --- Resumen de estados --------------------------------------------- */
+  .resumen { display: flex; flex-wrap: wrap; gap: 10px; }
+
+  .tarjeta-estado {
+    flex: 1 1 130px;
+    background: var(--surface);
+    border: 1px solid var(--linea);
+    border-radius: var(--radio);
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .tarjeta-estado b {
+    font: 500 26px/1 var(--mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tarjeta-estado span {
+    font-size: 12px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--ink-suave);
+  }
+
+  .tarjeta-estado[data-tono="listo"] b { color: var(--acento); }
+  .tarjeta-estado[data-tono="hecho"] b { color: var(--estado-hecho); }
+  .tarjeta-estado[data-tono="alerta"] b { color: var(--estado-alerta); }
+  .tarjeta-estado[data-tono="stop"] b { color: var(--estado-stop); }
+
+  /* --- Paneles --------------------------------------------------------- */
+  .paneles {
+    display: grid;
+    grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+    gap: 18px;
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .paneles { grid-template-columns: 1fr; }
+  }
+
+  .caja {
+    background: var(--surface);
+    border: 1px solid var(--linea);
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+    overflow: hidden;
+  }
+
+  .caja > header {
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--linea);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .caja > header h2 {
+    margin: 0;
+    font: 600 14px/1.2 var(--sans);
+    letter-spacing: .02em;
+  }
+
+  .caja > header .cuenta {
+    margin-left: auto;
+    font: 400 12px/1 var(--mono);
+    color: var(--ink-suave);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  /* --- Registro de inversores ------------------------------------------ */
+  .filtro { display: flex; gap: 6px; padding: 10px 12px; border-bottom: 1px solid var(--linea); flex-wrap: wrap; }
+
+  .filtro button {
+    border: 1px solid var(--linea);
+    background: transparent;
+    border-radius: 999px;
+    padding: 4px 11px;
+    font-size: 12.5px;
+    color: var(--ink-medio);
+    cursor: pointer;
+  }
+
+  .filtro button[aria-pressed="true"] {
+    background: var(--acento-tenue);
+    border-color: var(--acento);
+    color: var(--acento-hondo);
+    font-weight: 500;
+  }
+
+  .registro { list-style: none; margin: 0; padding: 0; max-height: 62vh; overflow-y: auto; }
+
+  .registro li { border-bottom: 1px solid var(--linea); }
+  .registro li:last-child { border-bottom: 0; }
+
+  .registro button {
+    width: 100%;
+    text-align: left;
+    border: 0;
+    border-left: 3px solid transparent;
+    background: transparent;
+    padding: 11px 14px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .registro button:hover { background: var(--surface-hunde); }
+
+  .registro button[aria-current="true"] {
+    background: var(--acento-tenue);
+    border-left-color: var(--acento);
+  }
+
+  .registro .fila-alta { display: flex; align-items: baseline; gap: 8px; }
+  .registro .nombre { font-weight: 600; }
+  .registro .id { font: 400 11.5px/1 var(--mono); color: var(--ink-suave); margin-left: auto; }
+  .registro .meta { font-size: 12.5px; color: var(--ink-medio); display: flex; gap: 10px; flex-wrap: wrap; }
+
+  /* --- Etiquetas de estado --------------------------------------------- */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 9px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: .02em;
+    border: 1px solid transparent;
+    white-space: nowrap;
+  }
+
+  .chip::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .chip[data-tono="neutro"] { background: var(--surface-hunde); color: var(--ink-medio); border-color: var(--linea-fuerte); }
+  .chip[data-tono="listo"] { background: var(--acento-tenue); color: var(--acento-hondo); border-color: var(--acento); }
+  .chip[data-tono="hecho"] { background: var(--estado-hecho-tenue); color: var(--estado-hecho); border-color: var(--estado-hecho); }
+  .chip[data-tono="alerta"] { background: var(--estado-alerta-tenue); color: var(--estado-alerta); border-color: var(--estado-alerta); }
+  .chip[data-tono="stop"] { background: var(--estado-stop-tenue); color: var(--estado-stop); border-color: var(--estado-stop); }
+  .chip--liso::before { display: none; }
+
+  /* --- Editor ---------------------------------------------------------- */
+  .editor-cuerpo { padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+
+  .campo { display: flex; flex-direction: column; gap: 6px; }
+
+  .campo > label {
+    font: 500 11.5px/1 var(--sans);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ink-suave);
+  }
+
+  .campo input[type="text"], .campo textarea, .campo select {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--linea-fuerte);
+    border-radius: 6px;
+    padding: 9px 11px;
+  }
+
+  .campo textarea { min-height: 190px; font: 400 13px/1.6 var(--mono); resize: vertical; }
+  .campo input[type="text"]:focus, .campo textarea:focus, .campo select:focus { border-color: var(--acento); }
+
+  .dos-columnas { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 720px) { .dos-columnas { grid-template-columns: 1fr; } }
+
+  .pista { font-size: 12.5px; color: var(--ink-suave); }
+
+  .direcciones { display: flex; flex-wrap: wrap; gap: 5px; min-height: 20px; }
+
+  .direccion {
+    font: 400 11.5px/1 var(--mono);
+    background: var(--surface-hunde);
+    border: 1px solid var(--linea);
+    border-radius: 4px;
+    padding: 4px 7px;
+    color: var(--ink-medio);
+  }
+
+  .aviso {
+    display: flex;
+    gap: 10px;
+    padding: 11px 13px;
+    border-radius: 6px;
+    border: 1px solid var(--estado-alerta);
+    background: var(--estado-alerta-tenue);
+    color: var(--estado-alerta);
+    font-size: 13.5px;
+  }
+
+  .aviso > span:first-child { font-weight: 600; white-space: nowrap; }
+
+  .aviso[hidden] { display: none; }
+
+  .aviso code {
+    font: 500 12.5px/1.5 var(--mono);
+    background: rgba(0, 0, 0, .06);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  .cabecera-editor { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .cabecera-editor h2 { font: 600 18px/1.2 var(--serif); margin: 0; }
+
+  .conmutador { display: flex; gap: 2px; background: var(--surface-hunde); padding: 3px; border-radius: 6px; margin-left: auto; }
+
+  .conmutador button {
+    border: 0;
+    background: transparent;
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: var(--ink-medio);
+    cursor: pointer;
+  }
+
+  .conmutador button[aria-selected="true"] { background: var(--surface); color: var(--ink); font-weight: 500; }
+
+  .vista-previa {
+    width: 100%;
+    min-height: 420px;
+    border: 1px solid var(--linea-fuerte);
+    border-radius: 6px;
+    background: #fff;
+  }
+
+  .barra-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 13px 16px;
+    border-top: 1px solid var(--linea);
+    background: var(--surface-hunde);
+  }
+
+  .barra-acciones .separador { margin-left: auto; }
+
+  /* --- Matriz ----------------------------------------------------------- */
+  .envoltorio-tabla { overflow-x: auto; }
+
+  table.matriz { border-collapse: collapse; width: 100%; min-width: 560px; }
+
+  table.matriz th, table.matriz td {
+    border-bottom: 1px solid var(--linea);
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  table.matriz thead th {
+    font: 500 11.5px/1.3 var(--sans);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--ink-suave);
+    border-bottom: 1px solid var(--linea-fuerte);
+    position: sticky;
+    top: 0;
+    background: var(--surface);
+  }
+
+  table.matriz tbody th { font-weight: 600; white-space: nowrap; }
+  table.matriz tbody th small { display: block; font: 400 11.5px/1.4 var(--mono); color: var(--ink-suave); }
+  table.matriz td { text-align: center; }
+
+  /* --- Estado vacio ----------------------------------------------------- */
+  .vacio { padding: 40px 28px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; max-width: 62ch; }
+  .vacio h2 { margin: 0; font: 600 20px/1.25 var(--serif); }
+  .vacio p { margin: 0; color: var(--ink-medio); }
+
+  .vacio pre {
+    margin: 0;
+    width: 100%;
+    overflow-x: auto;
+    background: var(--surface-hunde);
+    border: 1px solid var(--linea);
+    border-radius: 6px;
+    padding: 12px 14px;
+    font: 400 12.5px/1.6 var(--mono);
+  }
+
+  .oculto { display: none !important; }
+
+  .brindis {
+    position: fixed;
+    left: 24px;
+    bottom: 24px;
+    max-width: min(60ch, calc(100vw - 48px));
+    background: var(--ink);
+    color: var(--ground);
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size: 13.5px;
+    box-shadow: var(--sombra);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .18s ease;
+  }
+
+  .brindis[data-visible="true"] { opacity: 1; }
+</style>
+
+<div class="app">
+  <header class="barra">
+    <div class="marca">
+      <strong>Navalmanzano</strong>
+      <span>Comunicaciones a inversores</span>
+    </div>
+
+    <nav class="pestanas" role="tablist" aria-label="Vistas">
+      <button type="button" role="tab" id="pestana-paquete" aria-selected="true" aria-controls="vista-paquete">Paquete</button>
+      <button type="button" role="tab" id="pestana-matriz" aria-selected="false" aria-controls="vista-matriz">Histórico</button>
+    </nav>
+
+    <div class="acciones">
+      <label class="boton" for="entrada-archivo">Cargar paquete</label>
+      <input type="file" id="entrada-archivo" accept=".json,application/json" multiple class="oculto">
+      <button type="button" class="boton" id="boton-copiar" disabled>Copiar JSON</button>
+      <button type="button" class="boton" id="boton-limpiar" disabled>Vaciar consola</button>
+    </div>
+  </header>
+
+  <!-- ------------------------- Vista: paquete ------------------------- -->
+  <section id="vista-paquete" role="tabpanel" aria-labelledby="pestana-paquete">
+    <div class="caja oculto" id="bienvenida-envoltorio">
+      <div class="vacio">
+        <h2>No hay ningún paquete cargado</h2>
+        <p>
+          Un paquete es una comunicación concreta y sus destinatarios: un envío por inversor,
+          con su asunto, su cuerpo y sus copias. Se genera desde el repositorio:
+        </p>
+        <pre>python3 navalmanzano/tools/ag.py generar \
+  --id 2026-09-avance-obra \
+  --titulo "Avance de obra — septiembre 2026" \
+  --plantilla avance_proyecto.html \
+  --asunto "Navalmanzano · Avance {{periodo}} — {{nombre}}"</pre>
+        <p>
+          Carga aquí el <code>paquete.json</code> resultante para revisarlo envío a envío. Lo que
+          apruebes se guarda en el propio archivo; los borradores los crea el agente después.
+        </p>
+        <div class="acciones">
+          <button type="button" class="boton boton--fuerte" id="boton-ejemplo">Ver un paquete de ejemplo</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="paquete-contenido" class="oculto" style="display:flex;flex-direction:column;gap:18px">
+      <div class="resumen" id="resumen"></div>
+
+      <div class="paneles">
+        <div class="caja">
+          <header>
+            <h2 id="titulo-paquete">Envíos</h2>
+            <span class="cuenta" id="cuenta-envios"></span>
+          </header>
+          <div class="filtro" id="filtro" role="group" aria-label="Filtrar por estado"></div>
+          <ul class="registro" id="registro"></ul>
+        </div>
+
+        <div class="caja" id="caja-editor">
+          <div class="editor-cuerpo" id="editor"></div>
+          <div class="barra-acciones" id="acciones-envio"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ------------------------- Vista: matriz -------------------------- -->
+  <section id="vista-matriz" role="tabpanel" aria-labelledby="pestana-matriz" class="oculto">
+    <div class="caja">
+      <header>
+        <h2>Inversor × comunicación</h2>
+        <span class="cuenta" id="cuenta-matriz"></span>
+      </header>
+      <div class="envoltorio-tabla">
+        <table class="matriz" id="matriz">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="brindis" id="brindis" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  var ESTADOS = {
+    pendiente_revision: { etiqueta: "Pendiente de revisión", corto: "Pendiente", tono: "neutro" },
+    aprobado:           { etiqueta: "Aprobado", corto: "Aprobado", tono: "listo" },
+    borrador_creado:    { etiqueta: "Borrador creado", corto: "Borrador", tono: "hecho" },
+    omitido:            { etiqueta: "Omitido", corto: "Omitido", tono: "neutro" },
+    error:              { etiqueta: "Error", corto: "Error", tono: "stop" }
+  };
+
+  var ORDEN_ESTADOS = ["pendiente_revision", "aprobado", "borrador_creado", "omitido", "error"];
+  var RE_CAMPO = /\{\{\s*([a-zA-Z0-9_]+)\s*\}\}/g;
+  var CLAVE_ALMACEN = "navalmanzano_consola_v1";
+
+  var estado = {
+    paquetes: [],
+    indicePaquete: 0,
+    idSeleccionado: null,
+    filtro: "todos",
+    modoVista: "editar"
+  };
+
+  var nodos = {
+    bienvenida: document.getElementById("bienvenida-envoltorio"),
+    contenido: document.getElementById("paquete-contenido"),
+    resumen: document.getElementById("resumen"),
+    registro: document.getElementById("registro"),
+    filtro: document.getElementById("filtro"),
+    editor: document.getElementById("editor"),
+    accionesEnvio: document.getElementById("acciones-envio"),
+    tituloPaquete: document.getElementById("titulo-paquete"),
+    cuentaEnvios: document.getElementById("cuenta-envios"),
+    matriz: document.getElementById("matriz"),
+    cuentaMatriz: document.getElementById("cuenta-matriz"),
+    brindis: document.getElementById("brindis"),
+    botonCopiar: document.getElementById("boton-copiar"),
+    botonLimpiar: document.getElementById("boton-limpiar")
+  };
+
+  // ---------------------------------------------------------------- utiles
+  function texto(valor) { return valor == null ? "" : String(valor); }
+
+  function escapar(valor) {
+    return texto(valor).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function camposSinResolver(envio) {
+    var encontrados = [];
+    var fuente = texto(envio.asunto) + " " + texto(envio.cuerpo_html);
+    var coincidencia;
+    RE_CAMPO.lastIndex = 0;
+    while ((coincidencia = RE_CAMPO.exec(fuente)) !== null) {
+      if (encontrados.indexOf(coincidencia[1]) === -1) encontrados.push(coincidencia[1]);
+    }
+    return encontrados;
+  }
+
+  function motivoBloqueo(envio) {
+    if (!envio.to || !envio.to.length) return "no tiene destinatario";
+    if (!texto(envio.asunto).trim()) return "no tiene asunto";
+    if (!texto(envio.cuerpo_html).trim()) return "no tiene cuerpo";
+    var faltan = camposSinResolver(envio);
+    if (faltan.length) return "tiene campos sin completar: " + faltan.join(", ");
+    return null;
+  }
+
+  function avisar(mensaje) {
+    nodos.brindis.textContent = mensaje;
+    nodos.brindis.setAttribute("data-visible", "true");
+    window.clearTimeout(avisar.temporizador);
+    avisar.temporizador = window.setTimeout(function () {
+      nodos.brindis.setAttribute("data-visible", "false");
+    }, 2600);
+  }
+
+  function paqueteActual() { return estado.paquetes[estado.indicePaquete] || null; }
+
+  function envioActual() {
+    var paquete = paqueteActual();
+    if (!paquete) return null;
+    for (var i = 0; i < paquete.envios.length; i++) {
+      if (paquete.envios[i].id_inversor === estado.idSeleccionado) return paquete.envios[i];
+    }
+    return null;
+  }
+
+  function listaDesdeTexto(valor) {
+    return texto(valor).split(/[;,\n]+/).map(function (p) { return p.trim(); })
+      .filter(function (p) { return p.length > 0; });
+  }
+
+  // ------------------------------------------------------------ almacenaje
+  function guardar() {
+    try {
+      window.localStorage.setItem(CLAVE_ALMACEN, JSON.stringify(estado.paquetes));
+    } catch (e) { /* Sin almacenamiento local sigue siendo utilizable en memoria. */ }
+  }
+
+  function recuperar() {
+    try {
+      var crudo = window.localStorage.getItem(CLAVE_ALMACEN);
+      if (!crudo) return false;
+      var datos = JSON.parse(crudo);
+      if (!Array.isArray(datos) || !datos.length) return false;
+      estado.paquetes = datos;
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // ------------------------------------------------------------- pintado
+  function pintar() {
+    var hayPaquetes = estado.paquetes.length > 0;
+    nodos.bienvenida.classList.toggle("oculto", hayPaquetes);
+    nodos.contenido.classList.toggle("oculto", !hayPaquetes);
+    nodos.botonCopiar.disabled = !hayPaquetes;
+    nodos.botonLimpiar.disabled = !hayPaquetes;
+    if (!hayPaquetes) { pintarMatriz(); return; }
+
+    var paquete = paqueteActual();
+    if (!envioActual() && paquete.envios.length) {
+      estado.idSeleccionado = paquete.envios[0].id_inversor;
+    }
+
+    nodos.tituloPaquete.textContent = paquete.titulo || paquete.paquete_id;
+    nodos.cuentaEnvios.textContent = paquete.envios.length + " envíos";
+
+    pintarResumen(paquete);
+    pintarFiltro(paquete);
+    pintarRegistro(paquete);
+    pintarEditor();
+    pintarMatriz();
+  }
+
+  function contarEstados(paquete) {
+    var cuenta = {};
+    paquete.envios.forEach(function (envio) {
+      cuenta[envio.estado] = (cuenta[envio.estado] || 0) + 1;
+    });
+    return cuenta;
+  }
+
+  function pintarResumen(paquete) {
+    var cuenta = contarEstados(paquete);
+    var bloqueados = paquete.envios.filter(function (e) {
+      return e.estado !== "omitido" && e.estado !== "borrador_creado" && motivoBloqueo(e);
+    }).length;
+
+    var tarjetas = [
+      { valor: paquete.envios.length, etiqueta: "Envíos", tono: "" },
+      { valor: cuenta.aprobado || 0, etiqueta: "Aprobados", tono: "listo" },
+      { valor: cuenta.borrador_creado || 0, etiqueta: "Borradores creados", tono: "hecho" },
+      { valor: bloqueados, etiqueta: "Por completar", tono: "alerta" },
+      { valor: cuenta.error || 0, etiqueta: "Con error", tono: "stop" }
+    ];
+
+    nodos.resumen.innerHTML = tarjetas.map(function (t) {
+      return '<div class="tarjeta-estado" data-tono="' + t.tono + '">' +
+             "<b>" + t.valor + "</b><span>" + escapar(t.etiqueta) + "</span></div>";
+    }).join("");
+  }
+
+  function pintarFiltro(paquete) {
+    var cuenta = contarEstados(paquete);
+    var opciones = [{ clave: "todos", etiqueta: "Todos", total: paquete.envios.length }];
+    ORDEN_ESTADOS.forEach(function (clave) {
+      if (cuenta[clave]) {
+        opciones.push({ clave: clave, etiqueta: ESTADOS[clave].corto, total: cuenta[clave] });
+      }
+    });
+
+    nodos.filtro.innerHTML = opciones.map(function (o) {
+      return '<button type="button" data-filtro="' + o.clave + '" aria-pressed="' +
+             (estado.filtro === o.clave) + '">' + escapar(o.etiqueta) + " " + o.total + "</button>";
+    }).join("");
+  }
+
+  function pintarRegistro(paquete) {
+    var visibles = paquete.envios.filter(function (envio) {
+      return estado.filtro === "todos" || envio.estado === estado.filtro;
+    });
+
+    if (!visibles.length) {
+      nodos.registro.innerHTML = '<li><div style="padding:16px;color:var(--ink-suave);font-size:13.5px">' +
+        "Ningún envío en este estado.</div></li>";
+      return;
+    }
+
+    nodos.registro.innerHTML = visibles.map(function (envio) {
+      var info = ESTADOS[envio.estado] || ESTADOS.pendiente_revision;
+      var bloqueo = motivoBloqueo(envio);
+      var copias = (envio.cc || []).length + (envio.bcc || []).length;
+      var adjuntos = (envio.adjuntos || []).length;
+
+      var meta = ['<span class="chip" data-tono="' + info.tono + '">' + escapar(info.corto) + "</span>"];
+      if (copias) meta.push("<span>" + copias + (copias === 1 ? " copia" : " copias") + "</span>");
+      if (adjuntos) meta.push("<span>" + adjuntos + (adjuntos === 1 ? " adjunto" : " adjuntos") + "</span>");
+      if (bloqueo && envio.estado !== "omitido" && envio.estado !== "borrador_creado") {
+        meta.push('<span class="chip chip--liso" data-tono="alerta">Por completar</span>');
+      }
+
+      return '<li><button type="button" data-inversor="' + escapar(envio.id_inversor) + '" aria-current="' +
+             (envio.id_inversor === estado.idSeleccionado) + '">' +
+             '<span class="fila-alta"><span class="nombre">' + escapar(envio.nombre || envio.id_inversor) +
+             '</span><span class="id">' + escapar(envio.id_inversor) + "</span></span>" +
+             '<span class="meta">' + meta.join("") + "</span></button></li>";
+    }).join("");
+  }
+
+  function pintarEditor() {
+    var envio = envioActual();
+    if (!envio) {
+      nodos.editor.innerHTML = '<p class="pista">Selecciona un envío del registro.</p>';
+      nodos.accionesEnvio.innerHTML = "";
+      return;
+    }
+
+    var info = ESTADOS[envio.estado] || ESTADOS.pendiente_revision;
+    var faltan = camposSinResolver(envio);
+    var partes = [];
+
+    partes.push('<div class="cabecera-editor">' +
+      "<h2>" + escapar(envio.nombre || envio.id_inversor) + "</h2>" +
+      '<span class="chip" data-tono="' + info.tono + '">' + escapar(info.etiqueta) + "</span>" +
+      '<div class="conmutador" role="tablist" aria-label="Modo del cuerpo">' +
+      '<button type="button" role="tab" data-modo="editar" aria-selected="' + (estado.modoVista === "editar") + '">Editar</button>' +
+      '<button type="button" role="tab" data-modo="previa" aria-selected="' + (estado.modoVista === "previa") + '">Vista previa</button>' +
+      "</div></div>");
+
+    partes.push('<div class="aviso" id="aviso-campos"' + (faltan.length ? "" : " hidden") + "></div>");
+
+    partes.push('<div class="campo"><label for="campo-asunto">Asunto</label>' +
+      '<input type="text" id="campo-asunto" value="' + escapar(envio.asunto) + '"></div>');
+
+    partes.push('<div class="dos-columnas">' +
+      campoDirecciones("cc", "En copia (CC)", envio.cc) +
+      campoDirecciones("bcc", "Copia oculta (BCC)", envio.bcc) +
+      "</div>");
+
+    partes.push('<div class="campo"><label>Destinatario</label><div class="direcciones">' +
+      ((envio.to || []).length
+        ? envio.to.map(function (d) { return '<span class="direccion">' + escapar(d) + "</span>"; }).join("")
+        : '<span class="pista">Sin destinatario: este envío no puede generar borrador.</span>') +
+      "</div></div>");
+
+    if (estado.modoVista === "editar") {
+      partes.push('<div class="campo"><label for="campo-cuerpo">Cuerpo (HTML del correo)</label>' +
+        '<textarea id="campo-cuerpo" spellcheck="false">' + escapar(envio.cuerpo_html) + "</textarea>" +
+        '<span class="pista">Los textos entre llaves dobles se sustituyen al generar; ' +
+        "los que queden aquí viajarían tal cual al inversor.</span></div>");
+    } else {
+      partes.push('<div class="campo"><label>Vista previa</label>' +
+        '<iframe class="vista-previa" id="vista-previa" title="Vista previa del correo" sandbox=""></iframe></div>');
+    }
+
+    var adjuntos = envio.adjuntos || [];
+    partes.push('<div class="campo"><label>Adjuntos</label><div class="direcciones">' +
+      (adjuntos.length
+        ? adjuntos.map(function (a) {
+            var peso = a.tamano_bytes ? " · " + (a.tamano_bytes / 1048576).toFixed(1) + " MB" : "";
+            return '<span class="direccion">' + escapar(a.nombre) + escapar(peso) + "</span>";
+          }).join("")
+        : '<span class="pista">Sin adjuntos. Se añaden desde el repositorio con <code>ag.py adjuntar</code>.</span>') +
+      "</div></div>");
+
+    partes.push('<div class="campo"><label for="campo-notas">Nota interna</label>' +
+      '<input type="text" id="campo-notas" value="' + escapar(envio.notas) + '" ' +
+      'placeholder="No viaja en el correo"></div>');
+
+    nodos.editor.innerHTML = partes.join("");
+
+    refrescarAviso(envio);
+
+    if (estado.modoVista === "previa") {
+      var marco = document.getElementById("vista-previa");
+      if (marco) marco.srcdoc = envio.cuerpo_html || "<p>Sin cuerpo.</p>";
+    }
+
+    pintarAccionesEnvio(envio);
+  }
+
+  function refrescarAviso(envio) {
+    var caja = document.getElementById("aviso-campos");
+    if (!caja) return;
+    var faltan = camposSinResolver(envio);
+    caja.hidden = faltan.length === 0;
+    if (!faltan.length) return;
+    caja.innerHTML = "<span>Sin completar</span><span>Este correo aún contiene " +
+      faltan.map(function (c) { return "<code>{{" + escapar(c) + "}}</code>"; }).join(" ") +
+      ". Mientras queden campos sin resolver no se puede aprobar.</span>";
+  }
+
+  function campoDirecciones(clave, etiqueta, valores) {
+    return '<div class="campo"><label for="campo-' + clave + '">' + escapar(etiqueta) + "</label>" +
+      '<input type="text" id="campo-' + clave + '" value="' + escapar((valores || []).join("; ")) + '" ' +
+      'placeholder="Separadas por punto y coma"></div>';
+  }
+
+  function pintarAccionesEnvio(envio) {
+    var bloqueo = motivoBloqueo(envio);
+    var yaCreado = envio.estado === "borrador_creado";
+    var botones = [];
+
+    botones.push('<button type="button" class="boton boton--fuerte" data-accion="aprobar"' +
+      (bloqueo || yaCreado ? " disabled" : "") + ">Aprobar</button>");
+    botones.push('<button type="button" class="boton" data-accion="pendiente"' +
+      (yaCreado ? " disabled" : "") + ">Devolver a pendiente</button>");
+    botones.push('<button type="button" class="boton" data-accion="omitir"' +
+      (yaCreado ? " disabled" : "") + ">Omitir</button>");
+    botones.push('<span class="separador"></span>');
+    botones.push('<button type="button" class="boton" data-accion="aprobar-todos">Aprobar todo lo completo</button>');
+
+    var pie = "";
+    if (yaCreado) {
+      pie = '<span class="pista" style="width:100%">Ya existe un borrador en Gmail' +
+            (envio.draft_id ? " (" + escapar(envio.draft_id) + ")" : "") +
+            ". Para cambiarlo, corrígelo en Gmail o pídeselo al agente.</span>";
+    } else if (bloqueo) {
+      pie = '<span class="pista" style="width:100%">No se puede aprobar: ' + escapar(bloqueo) + ".</span>";
+    }
+
+    nodos.accionesEnvio.innerHTML = botones.join("") + pie;
+  }
+
+  function pintarMatriz() {
+    var paquetes = estado.paquetes;
+    var cabeza = nodos.matriz.querySelector("thead");
+    var cuerpo = nodos.matriz.querySelector("tbody");
+
+    if (!paquetes.length) {
+      cabeza.innerHTML = "";
+      cuerpo.innerHTML = '<tr><td style="text-align:left;color:var(--ink-suave)">' +
+        "Carga uno o varios paquetes para ver aquí qué ha recibido cada inversor.</td></tr>";
+      nodos.cuentaMatriz.textContent = "";
+      return;
+    }
+
+    var inversores = [];
+    paquetes.forEach(function (paquete) {
+      paquete.envios.forEach(function (envio) {
+        var existente = inversores.filter(function (i) { return i.id === envio.id_inversor; })[0];
+        if (!existente) inversores.push({ id: envio.id_inversor, nombre: envio.nombre });
+      });
+    });
+
+    cabeza.innerHTML = "<tr><th>Inversor</th>" + paquetes.map(function (p) {
+      return "<th>" + escapar(p.titulo || p.paquete_id) + "</th>";
+    }).join("") + "</tr>";
+
+    cuerpo.innerHTML = inversores.map(function (inversor) {
+      var celdas = paquetes.map(function (paquete) {
+        var envio = paquete.envios.filter(function (e) { return e.id_inversor === inversor.id; })[0];
+        if (!envio) return '<td><span class="pista">—</span></td>';
+        var info = ESTADOS[envio.estado] || ESTADOS.pendiente_revision;
+        return '<td><span class="chip" data-tono="' + info.tono + '">' + escapar(info.corto) + "</span></td>";
+      }).join("");
+      return "<tr><th scope=\"row\">" + escapar(inversor.nombre || inversor.id) +
+             "<small>" + escapar(inversor.id) + "</small></th>" + celdas + "</tr>";
+    }).join("");
+
+    nodos.cuentaMatriz.textContent = inversores.length + " inversores · " + paquetes.length +
+      (paquetes.length === 1 ? " comunicación" : " comunicaciones");
+  }
+
+  // ---------------------------------------------------------------- eventos
+  nodos.filtro.addEventListener("click", function (evento) {
+    var boton = evento.target.closest("button[data-filtro]");
+    if (!boton) return;
+    estado.filtro = boton.getAttribute("data-filtro");
+    pintar();
+  });
+
+  nodos.registro.addEventListener("click", function (evento) {
+    var boton = evento.target.closest("button[data-inversor]");
+    if (!boton) return;
+    estado.idSeleccionado = boton.getAttribute("data-inversor");
+    pintar();
+  });
+
+  nodos.editor.addEventListener("click", function (evento) {
+    var boton = evento.target.closest("button[data-modo]");
+    if (!boton) return;
+    estado.modoVista = boton.getAttribute("data-modo");
+    pintarEditor();
+  });
+
+  nodos.editor.addEventListener("input", function (evento) {
+    var envio = envioActual();
+    if (!envio) return;
+    var id = evento.target.id;
+    if (id === "campo-asunto") envio.asunto = evento.target.value;
+    else if (id === "campo-cuerpo") envio.cuerpo_html = evento.target.value;
+    else if (id === "campo-notas") envio.notas = evento.target.value;
+    else if (id === "campo-cc") envio.cc = listaDesdeTexto(evento.target.value);
+    else if (id === "campo-bcc") envio.bcc = listaDesdeTexto(evento.target.value);
+    else return;
+
+    envio.campos_faltantes = camposSinResolver(envio);
+    guardar();
+    var paquete = paqueteActual();
+    pintarResumen(paquete);
+    pintarRegistro(paquete);
+    pintarAccionesEnvio(envio);
+    refrescarAviso(envio);
+  });
+
+  nodos.accionesEnvio.addEventListener("click", function (evento) {
+    var boton = evento.target.closest("button[data-accion]");
+    if (!boton) return;
+    var accion = boton.getAttribute("data-accion");
+    var envio = envioActual();
+    var paquete = paqueteActual();
+
+    if (accion === "aprobar-todos") {
+      var aprobados = 0;
+      paquete.envios.forEach(function (candidato) {
+        if (candidato.estado === "borrador_creado" || candidato.estado === "omitido") return;
+        if (motivoBloqueo(candidato)) return;
+        candidato.estado = "aprobado";
+        aprobados++;
+      });
+      avisar(aprobados + (aprobados === 1 ? " envío aprobado" : " envíos aprobados"));
+    } else if (envio) {
+      if (accion === "aprobar" && !motivoBloqueo(envio)) envio.estado = "aprobado";
+      if (accion === "pendiente") envio.estado = "pendiente_revision";
+      if (accion === "omitir") envio.estado = "omitido";
+    }
+
+    guardar();
+    pintar();
+  });
+
+  document.getElementById("entrada-archivo").addEventListener("change", function (evento) {
+    var archivos = Array.prototype.slice.call(evento.target.files || []);
+    if (!archivos.length) return;
+    var restantes = archivos.length;
+
+    archivos.forEach(function (archivo) {
+      var lector = new FileReader();
+      lector.onload = function () {
+        try {
+          incorporarPaquete(JSON.parse(String(lector.result)));
+        } catch (e) {
+          avisar("No se pudo leer " + archivo.name + ": no parece un paquete válido");
+        }
+        if (--restantes === 0) { guardar(); pintar(); }
+      };
+      lector.readAsText(archivo);
+    });
+    evento.target.value = "";
+  });
+
+  function incorporarPaquete(datos) {
+    if (!datos || !Array.isArray(datos.envios)) throw new Error("estructura inesperada");
+    var existente = -1;
+    for (var i = 0; i < estado.paquetes.length; i++) {
+      if (estado.paquetes[i].paquete_id === datos.paquete_id) existente = i;
+    }
+    if (existente >= 0) estado.paquetes[existente] = datos;
+    else estado.paquetes.push(datos);
+    estado.indicePaquete = existente >= 0 ? existente : estado.paquetes.length - 1;
+    estado.idSeleccionado = datos.envios.length ? datos.envios[0].id_inversor : null;
+    avisar("Paquete cargado: " + (datos.titulo || datos.paquete_id));
+  }
+
+  nodos.botonCopiar.addEventListener("click", function () {
+    var paquete = paqueteActual();
+    if (!paquete) return;
+    var serializado = JSON.stringify(paquete, null, 2);
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(serializado).then(function () {
+        avisar("JSON copiado. Pégalo sobre paquetes/" + paquete.paquete_id + "/paquete.json");
+      }, mostrarParaCopiarAMano);
+    } else {
+      mostrarParaCopiarAMano();
+    }
+
+    function mostrarParaCopiarAMano() {
+      var area = document.createElement("textarea");
+      area.value = serializado;
+      area.style.cssText = "position:fixed;inset:auto 0 0 0;height:38vh;z-index:99;font:12px monospace";
+      document.body.appendChild(area);
+      area.select();
+      avisar("Copia el contenido a mano y pulsa Escape para cerrar");
+      area.addEventListener("keydown", function (e) { if (e.key === "Escape") area.remove(); });
+    }
+  });
+
+  nodos.botonLimpiar.addEventListener("click", function () {
+    if (!window.confirm("Se quitarán los paquetes de esta consola. Los archivos del repositorio no se tocan.")) return;
+    estado.paquetes = [];
+    estado.idSeleccionado = null;
+    estado.indicePaquete = 0;
+    guardar();
+    pintar();
+    avisar("Consola vacía");
+  });
+
+  document.getElementById("boton-ejemplo").addEventListener("click", function () {
+    incorporarPaquete(JSON.parse(JSON.stringify(PAQUETE_EJEMPLO)));
+    guardar();
+    pintar();
+  });
+
+  document.querySelectorAll('.pestanas button[role="tab"]').forEach(function (pestana) {
+    pestana.addEventListener("click", function () {
+      document.querySelectorAll('.pestanas button[role="tab"]').forEach(function (otra) {
+        var activa = otra === pestana;
+        otra.setAttribute("aria-selected", String(activa));
+        document.getElementById(otra.getAttribute("aria-controls")).classList.toggle("oculto", !activa);
+      });
+    });
+  });
+
+  var PAQUETE_EJEMPLO = {
+  "paquete_id": "2026-09-avance-obra",
+  "titulo": "Avance de obra — septiembre 2026 (paquete de ejemplo)",
+  "remitente": "mm@ardatz.com",
+  "creado": "2026-09-01T10:00:00",
+  "actualizado": "2026-09-01T10:00:00",
+  "plantilla": "avance_proyecto.html",
+  "asunto_plantilla": "Navalmanzano · Avance de obra {{periodo}} — {{nombre}}",
+  "notas": "Paquete de demostración con inversores ficticios.",
+  "envios": [
+    {
+      "id_inversor": "INV-001",
+      "nombre": "Ana Ficticia Ruiz",
+      "to": ["ana.ficticia@ejemplo.test"],
+      "cc": ["asesor.ana@ejemplo.test", "gestoria@ejemplo.test"],
+      "bcc": [],
+      "asunto": "Navalmanzano · Avance de obra septiembre de 2026 — Ana",
+      "cuerpo_html": "<div style=\"margin:0;padding:0;background:#f4f5f7\">\n  <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#f4f5f7;padding:24px 12px\">\n    <tr>\n      <td align=\"center\">\n        <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"\n               style=\"max-width:620px;background:#ffffff;border-radius:10px;border:1px solid #e3e6ea\">\n          <tr>\n            <td style=\"padding:22px 28px;border-bottom:2px solid #7a4c28\">\n              <div style=\"font:600 17px/1.3 Georgia,'Times New Roman',serif;color:#1f2733\">Navalmanzano</div>\n              <div style=\"font:400 12px/1.4 Arial,Helvetica,sans-serif;color:#6b7280;letter-spacing:.05em;text-transform:uppercase;margin-top:3px\">Comunicación a inversores</div>\n            </td>\n          </tr>\n          <tr>\n            <td style=\"padding:26px 28px;font:400 15px/1.65 Arial,Helvetica,sans-serif;color:#28313d\">\n<p style=\"margin:0 0 16px\">Estimada Ana:</p>\n<p style=\"margin:0 0 18px\">Le comparto el estado de avance del proyecto Navalmanzano correspondiente a septiembre de 2026.</p>\n<p style=\"margin:0 0 8px;font-weight:700;color:#1f2733\">Avance del período</p>\n<p style=\"margin:0 0 18px\">{{resumen_avance}}</p>\n<p style=\"margin:0 0 8px;font-weight:700;color:#1f2733\">Próximos pasos</p>\n<p style=\"margin:0 0 18px\">{{proximos_pasos}}</p>\n<p style=\"margin:0 0 16px\">Quedo a su disposición para revisar cualquier punto en detalle.</p>\n<p style=\"margin:24px 0 0;color:#5b6472;font-size:13px;line-height:1.6\">Un cordial saludo,<br><strong style=\"color:#1f2733\">Miguel Mujica Arriagada</strong></p>\n            </td>\n          </tr>\n          <tr>\n            <td style=\"padding:14px 28px 20px;border-top:1px solid #eceef1;font:400 11px/1.5 Arial,Helvetica,sans-serif;color:#8a919c\">\n              Comunicación dirigida exclusivamente a Ana Ficticia Ruiz. Contiene información confidencial del proyecto Navalmanzano.\n            </td>\n          </tr>\n        </table>\n      </td>\n    </tr>\n  </table>\n</div>",
+      "adjuntos": [],
+      "estado": "pendiente_revision",
+      "draft_id": "",
+      "campos_faltantes": ["resumen_avance", "proximos_pasos"],
+      "notas": ""
+    },
+    {
+      "id_inversor": "INV-002",
+      "nombre": "Grupo Ejemplo S.L.",
+      "to": ["contacto@grupoejemplo.test"],
+      "cc": ["Luis Ficticio <luis@grupoejemplo.test>"],
+      "bcc": [],
+      "asunto": "Navalmanzano · Avance de obra septiembre de 2026 — Grupo Ejemplo",
+      "cuerpo_html": "<div style=\"margin:0;padding:0;background:#f4f5f7\">\n  <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#f4f5f7;padding:24px 12px\">\n    <tr>\n      <td align=\"center\">\n        <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"\n               style=\"max-width:620px;background:#ffffff;border-radius:10px;border:1px solid #e3e6ea\">\n          <tr>\n            <td style=\"padding:22px 28px;border-bottom:2px solid #7a4c28\">\n              <div style=\"font:600 17px/1.3 Georgia,'Times New Roman',serif;color:#1f2733\">Navalmanzano</div>\n              <div style=\"font:400 12px/1.4 Arial,Helvetica,sans-serif;color:#6b7280;letter-spacing:.05em;text-transform:uppercase;margin-top:3px\">Comunicación a inversores</div>\n            </td>\n          </tr>\n          <tr>\n            <td style=\"padding:26px 28px;font:400 15px/1.65 Arial,Helvetica,sans-serif;color:#28313d\">\n<p style=\"margin:0 0 16px\">Estimados Grupo Ejemplo:</p>\n<p style=\"margin:0 0 18px\">Le comparto el estado de avance del proyecto Navalmanzano correspondiente a septiembre de 2026.</p>\n<p style=\"margin:0 0 8px;font-weight:700;color:#1f2733\">Avance del período</p>\n<p style=\"margin:0 0 18px\">{{resumen_avance}}</p>\n<p style=\"margin:0 0 8px;font-weight:700;color:#1f2733\">Próximos pasos</p>\n<p style=\"margin:0 0 18px\">{{proximos_pasos}}</p>\n<p style=\"margin:0 0 16px\">Quedo a su disposición para revisar cualquier punto en detalle.</p>\n<p style=\"margin:24px 0 0;color:#5b6472;font-size:13px;line-height:1.6\">Un cordial saludo,<br><strong style=\"color:#1f2733\">Miguel Mujica Arriagada</strong></p>\n            </td>\n          </tr>\n          <tr>\n            <td style=\"padding:14px 28px 20px;border-top:1px solid #eceef1;font:400 11px/1.5 Arial,Helvetica,sans-serif;color:#8a919c\">\n              Comunicación dirigida exclusivamente a Grupo Ejemplo S.L. Contiene información confidencial del proyecto Navalmanzano.\n            </td>\n          </tr>\n        </table>\n      </td>\n    </tr>\n  </table>\n</div>",
+      "adjuntos": [],
+      "estado": "pendiente_revision",
+      "draft_id": "",
+      "campos_faltantes": ["resumen_avance", "proximos_pasos"],
+      "notas": ""
+    }
+  ]
+};
+
+  recuperar();
+  pintar();
+})();
+</script>

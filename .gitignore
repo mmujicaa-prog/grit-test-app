@@ -15,6 +15,15 @@ andy_garden/paquetes/*
 # Bitacora de borradores creados: contiene destinatarios reales.
 andy_garden/bitacora.jsonl
 
+navalmanzano/datos/*
+!navalmanzano/datos/LEEME.md
+!navalmanzano/datos/padron_ejemplo.csv
+
+navalmanzano/paquetes/*
+
+# Bitacora de borradores creados: contiene destinatarios reales.
+navalmanzano/bitacora.jsonl
+
 # --- Habituales ----------------------------------------------------------
 __pycache__/
 *.pyc

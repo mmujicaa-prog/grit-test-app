@@ -247,12 +247,112 @@ def generate_pdf(participant_id, email, answers, perseverance, consistency, grit
     return buffer
 
 # -----------------------
+# Check-in diario de salud
+# -----------------------
+HEALTH_ATTACHMENTS_DIR = os.path.join("/tmp", "grit_health_attachments")
+SEED_HEALTH_ATTACHMENTS_DIR = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "assets", "health_checkins", "2026-09-07"
+)
+
+def init_health_checkin_db(path=DB_PATH):
+    conn = get_connection(path)
+    cur = conn.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS health_checkins (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            date TEXT,
+            timestamp TEXT,
+            recovery_pct REAL,
+            hrv REAL,
+            hrv_baseline REAL,
+            rhr REAL,
+            rhr_baseline REAL,
+            resp_rate REAL,
+            resp_rate_baseline REAL,
+            sleep_score_pct REAL,
+            sleep_score_baseline REAL,
+            sleep_hours REAL,
+            strain REAL,
+            steps INTEGER,
+            calories INTEGER,
+            sleep_efficiency_pct REAL,
+            stress_score REAL,
+            stress_level TEXT,
+            notes TEXT,
+            attachments TEXT
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+def save_health_checkin(data, attachment_paths, path=DB_PATH):
+    conn = get_connection(path)
+    cur = conn.cursor()
+    cur.execute("""
+        INSERT INTO health_checkins (
+            date, timestamp, recovery_pct, hrv, hrv_baseline, rhr, rhr_baseline,
+            resp_rate, resp_rate_baseline, sleep_score_pct, sleep_score_baseline,
+            sleep_hours, strain, steps, calories, sleep_efficiency_pct,
+            stress_score, stress_level, notes, attachments
+        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+    """, (
+        data["date"], datetime.utcnow().isoformat(),
+        data["recovery_pct"], data["hrv"], data["hrv_baseline"],
+        data["rhr"], data["rhr_baseline"],
+        data["resp_rate"], data["resp_rate_baseline"],
+        data["sleep_score_pct"], data["sleep_score_baseline"],
+        data["sleep_hours"], data["strain"], data["steps"], data["calories"],
+        data["sleep_efficiency_pct"], data["stress_score"], data["stress_level"],
+        data["notes"], ",".join(attachment_paths)
+    ))
+    conn.commit()
+    conn.close()
+
+def load_health_checkins(path=DB_PATH):
+    try:
+        conn = get_connection(path)
+        df = pd.read_sql_query("SELECT * FROM health_checkins ORDER BY date DESC, id DESC", conn)
+        conn.close()
+        return df
+    except Exception:
+        return pd.DataFrame()
+
+def seed_health_checkin_if_empty(path=DB_PATH):
+    """Carga el check-in del 2026-09-07 con las capturas de WHOOP aportadas por el usuario, si la tabla aún está vacía."""
+    if len(load_health_checkins(path)) > 0:
+        return
+    if not os.path.isdir(SEED_HEALTH_ATTACHMENTS_DIR):
+        return
+    attachment_paths = sorted(
+        os.path.join(SEED_HEALTH_ATTACHMENTS_DIR, f) for f in os.listdir(SEED_HEALTH_ATTACHMENTS_DIR)
+    )
+    data = {
+        "date": "2026-09-07",
+        "recovery_pct": 30, "hrv": 16, "hrv_baseline": 23,
+        "rhr": 67, "rhr_baseline": 58,
+        "resp_rate": 15.7, "resp_rate_baseline": 14.5,
+        "sleep_score_pct": 67, "sleep_score_baseline": 77,
+        "sleep_hours": None, "strain": None, "steps": None, "calories": None,
+        "sleep_efficiency_pct": None, "stress_score": None, "stress_level": None,
+        "notes": (
+            "Datos WHOOP. Recuperación baja (30%) con HRV por debajo de la media móvil (16 vs 23), "
+            "FC en reposo elevada (67 vs 58) y calificación del sueño por debajo de la media (67% vs 77%). "
+            "Señal de carga acumulada: revisar comportamientos del día anterior."
+        ),
+    }
+    save_health_checkin(data, attachment_paths, path)
+
+# -----------------------
 # Interfaz principal
 # -----------------------
 def main():
     init_db(DB_PATH)
+    init_health_checkin_db(DB_PATH)
+    seed_health_checkin_if_empty(DB_PATH)
     st.title("🧭 Test Escala de Grit")
-    menu = st.sidebar.selectbox("Navegación", ["Aplicar test", "Panel administrativo"])
+    menu = st.sidebar.selectbox(
+        "Navegación", ["Aplicar test", "Check-in diario de salud", "Panel administrativo"]
+    )
 
     if menu == "Aplicar test":
         st.header("Aplicar test")
@@ -301,6 +401,84 @@ def main():
                 except Exception:
                     st.error("Error al procesar las respuestas. Recarga la página e inténtalo de nuevo.")
                     st.code(traceback.format_exc())
+
+    elif menu == "Check-in diario de salud":
+        st.header("🩺 Check-in diario de salud")
+        st.write(
+            "Registra tus métricas diarias de recuperación, sueño y esfuerzo, y adjunta capturas "
+            "de tu app de salud (ej. WHOOP)."
+        )
+
+        with st.form("health_checkin_form"):
+            checkin_date = st.date_input("Fecha", value=datetime.utcnow().date())
+            col1, col2 = st.columns(2)
+            with col1:
+                recovery_pct = st.number_input("Recuperación (%)", 0, 100, 0)
+                hrv = st.number_input("HRV (ms)", 0.0, 300.0, 0.0)
+                rhr = st.number_input("FC en reposo (bpm)", 0, 200, 0)
+                resp_rate = st.number_input("Frecuencia respiratoria (rpm)", 0.0, 40.0, 0.0)
+                sleep_score_pct = st.number_input("Calificación del sueño (%)", 0, 100, 0)
+            with col2:
+                sleep_hours = st.number_input("Horas de sueño", 0.0, 24.0, 0.0)
+                strain = st.number_input("Esfuerzo (Strain)", 0.0, 21.0, 0.0)
+                steps = st.number_input("Pasos", 0, 100000, 0)
+                calories = st.number_input("Calorías", 0, 10000, 0)
+                sleep_efficiency_pct = st.number_input("Eficiencia del sueño (%)", 0, 100, 0)
+            stress_score = st.number_input("Nivel de estrés (0-3)", 0.0, 3.0, 0.0)
+            stress_level = st.selectbox("Categoría de estrés", ["", "Bajo", "Medio", "Alto"])
+            notes = st.text_area("Notas")
+            uploaded_files = st.file_uploader(
+                "Adjuntos (capturas de la app de salud)",
+                type=["png", "jpg", "jpeg"],
+                accept_multiple_files=True,
+            )
+            submitted_health = st.form_submit_button("Guardar check-in")
+
+        if submitted_health:
+            os.makedirs(HEALTH_ATTACHMENTS_DIR, exist_ok=True)
+            saved_paths = []
+            for f in uploaded_files or []:
+                dest = os.path.join(HEALTH_ATTACHMENTS_DIR, f"{checkin_date.isoformat()}_{f.name}")
+                with open(dest, "wb") as out:
+                    out.write(f.getbuffer())
+                saved_paths.append(dest)
+            data = {
+                "date": checkin_date.isoformat(),
+                "recovery_pct": recovery_pct, "hrv": hrv, "hrv_baseline": None,
+                "rhr": rhr, "rhr_baseline": None,
+                "resp_rate": resp_rate, "resp_rate_baseline": None,
+                "sleep_score_pct": sleep_score_pct, "sleep_score_baseline": None,
+                "sleep_hours": sleep_hours, "strain": strain, "steps": steps,
+                "calories": calories, "sleep_efficiency_pct": sleep_efficiency_pct,
+                "stress_score": stress_score, "stress_level": stress_level or None,
+                "notes": notes,
+            }
+            save_health_checkin(data, saved_paths)
+            st.success("✅ Check-in guardado correctamente")
+
+        st.subheader("📅 Historial de check-ins")
+        health_df = load_health_checkins()
+        if len(health_df) == 0:
+            st.info("Todavía no hay check-ins registrados.")
+        else:
+            for _, row in health_df.iterrows():
+                label = f"{row['date']} — Recuperación {row['recovery_pct']}% · Sueño {row['sleep_score_pct']}%"
+                with st.expander(label):
+                    c1, c2, c3 = st.columns(3)
+                    c1.metric("Recuperación", f"{row['recovery_pct']}%")
+                    hrv_delta = None if pd.isna(row["hrv_baseline"]) else row["hrv"] - row["hrv_baseline"]
+                    c2.metric("HRV", f"{row['hrv']} ms", delta=hrv_delta)
+                    rhr_delta = None if pd.isna(row["rhr_baseline"]) else row["rhr"] - row["rhr_baseline"]
+                    c3.metric("FC en reposo", f"{row['rhr']} bpm", delta=rhr_delta, delta_color="inverse")
+                    if row["notes"]:
+                        st.write(row["notes"])
+                    attachments = [p for p in (row["attachments"] or "").split(",") if p]
+                    if attachments:
+                        st.write("**Adjuntos:**")
+                        cols = st.columns(min(len(attachments), 4))
+                        for i, path in enumerate(attachments):
+                            if os.path.exists(path):
+                                cols[i % len(cols)].image(path, use_container_width=True)
 
     elif menu == "Panel administrativo":
         st.header("Panel administrativo")

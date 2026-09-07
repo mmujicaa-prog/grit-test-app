@@ -343,12 +343,94 @@ def seed_health_checkin_if_empty(path=DB_PATH):
     save_health_checkin(data, attachment_paths, path)
 
 # -----------------------
+# Mi Diario — rutina semanal de check-in (estilo WHOOP)
+# -----------------------
+DIAS_SEMANA = ["Lun.", "Mar.", "Mié.", "Jue.", "Vie.", "Sáb.", "Dom."]
+
+def init_routine_db(path=DB_PATH):
+    conn = get_connection(path)
+    cur = conn.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS routine_days (
+            date TEXT PRIMARY KEY,
+            completed INTEGER DEFAULT 0,
+            attachments TEXT,
+            notes TEXT
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+def week_start(d):
+    return d - pd.Timedelta(days=d.weekday())
+
+def get_week_routine(week_monday, path=DB_PATH):
+    conn = get_connection(path)
+    dates = [(week_monday + pd.Timedelta(days=i)).date().isoformat() for i in range(7)]
+    placeholders = ",".join(["?"] * 7)
+    df = pd.read_sql_query(
+        f"SELECT * FROM routine_days WHERE date IN ({placeholders})", conn, params=dates
+    )
+    conn.close()
+    by_date = {row["date"]: row for _, row in df.iterrows()}
+    return [by_date.get(d, {"date": d, "completed": 0, "attachments": "", "notes": ""}) for d in dates]
+
+def set_routine_day(date_str, completed=None, attachment_paths=None, notes=None, path=DB_PATH):
+    conn = get_connection(path)
+    cur = conn.cursor()
+    cur.execute("SELECT completed, attachments, notes FROM routine_days WHERE date=?", (date_str,))
+    row = cur.fetchone()
+    cur_completed, cur_attachments, cur_notes = row if row else (0, "", "")
+    new_completed = cur_completed if completed is None else int(completed)
+    new_attachments = cur_attachments if attachment_paths is None else ",".join(attachment_paths)
+    new_notes = cur_notes if notes is None else notes
+    cur.execute("""
+        INSERT INTO routine_days (date, completed, attachments, notes) VALUES (?,?,?,?)
+        ON CONFLICT(date) DO UPDATE SET completed=excluded.completed,
+            attachments=excluded.attachments, notes=excluded.notes
+    """, (date_str, new_completed, new_attachments, new_notes))
+    conn.commit()
+    conn.close()
+
+def seed_routine_if_empty(path=DB_PATH):
+    """Recrea 'Mi Diario' de la semana 31-ago al 6-sept-2026 (lun/mié/dom completados, con
+    las capturas de WHOOP adjuntas al domingo 6 y al lunes 7, tal como en la app original)."""
+    conn = get_connection(path)
+    count = pd.read_sql_query("SELECT COUNT(*) AS n FROM routine_days", conn).iloc[0]["n"]
+    conn.close()
+    if count > 0:
+        return
+    seed_dir = SEED_HEALTH_ATTACHMENTS_DIR
+    if not os.path.isdir(seed_dir):
+        return
+    files = sorted(os.listdir(seed_dir))
+    by_name = {f: os.path.join(seed_dir, f) for f in files}
+    sunday_attachments = [
+        by_name[f] for f in files
+        if f.startswith(("2_", "3_", "4_")) and f in by_name
+    ]
+    monday_attachments = [by_name[f] for f in files if f.startswith("1_") and f in by_name]
+
+    set_routine_day("2026-08-31", completed=1)
+    set_routine_day("2026-09-02", completed=1)
+    set_routine_day(
+        "2026-09-06", completed=1, attachment_paths=sunday_attachments,
+        notes="Resumen del día (sueño 83%, recuperación 75%, esfuerzo 12,8) y monitor de estrés."
+    )
+    set_routine_day(
+        "2026-09-07", completed=1, attachment_paths=monday_attachments,
+        notes="Recuperación del día: 30%."
+    )
+
+# -----------------------
 # Interfaz principal
 # -----------------------
 def main():
     init_db(DB_PATH)
     init_health_checkin_db(DB_PATH)
     seed_health_checkin_if_empty(DB_PATH)
+    init_routine_db(DB_PATH)
+    seed_routine_if_empty(DB_PATH)
     st.title("🧭 Test Escala de Grit")
     menu = st.sidebar.selectbox(
         "Navegación", ["Aplicar test", "Check-in diario de salud", "Panel administrativo"]
@@ -409,6 +491,72 @@ def main():
             "de tu app de salud (ej. WHOOP)."
         )
 
+        st.subheader("📓 Mi Diario — rutina semanal")
+        today = pd.Timestamp(datetime.utcnow().date())
+        if "routine_week" not in st.session_state:
+            st.session_state.routine_week = week_start(today)
+
+        nav1, nav2, nav3 = st.columns([1, 3, 1])
+        if nav1.button("←", key="routine_prev_week"):
+            st.session_state.routine_week -= pd.Timedelta(days=7)
+        if nav3.button("→", key="routine_next_week"):
+            st.session_state.routine_week += pd.Timedelta(days=7)
+        week_monday = st.session_state.routine_week
+        nav2.markdown(
+            f"**Semana del {week_monday.strftime('%d/%m/%Y')} "
+            f"al {(week_monday + pd.Timedelta(days=6)).strftime('%d/%m/%Y')}**"
+        )
+
+        routine_days = get_week_routine(week_monday)
+        day_cols = st.columns(7)
+        for i, (col, day_row) in enumerate(zip(day_cols, routine_days)):
+            date_str = day_row["date"]
+            attachments = [p for p in (day_row["attachments"] or "").split(",") if p]
+            with col:
+                st.markdown(f"**{DIAS_SEMANA[i]}**")
+                checked = st.checkbox(
+                    "Hecho", value=bool(day_row["completed"]), key=f"routine_done_{date_str}"
+                )
+                if checked != bool(day_row["completed"]):
+                    set_routine_day(date_str, completed=checked)
+                    st.rerun()
+                if attachments:
+                    st.caption(f"📎 {len(attachments)}")
+
+        selected_date = st.selectbox(
+            "Ver / adjuntar capturas de un día",
+            [d["date"] for d in routine_days],
+            format_func=lambda d: f"{DIAS_SEMANA[pd.Timestamp(d).weekday()]} {d}",
+        )
+        selected_row = next(d for d in routine_days if d["date"] == selected_date)
+        selected_attachments = [p for p in (selected_row["attachments"] or "").split(",") if p]
+        if selected_attachments:
+            cols = st.columns(min(len(selected_attachments), 4))
+            for i, path in enumerate(selected_attachments):
+                if os.path.exists(path):
+                    cols[i % len(cols)].image(path, use_container_width=True)
+        if selected_row["notes"]:
+            st.caption(selected_row["notes"])
+        new_files = st.file_uploader(
+            f"Adjuntar capturas al {selected_date}",
+            type=["png", "jpg", "jpeg"],
+            accept_multiple_files=True,
+            key=f"routine_upload_{selected_date}",
+        )
+        if new_files and st.button("Guardar adjuntos del día", key=f"routine_save_{selected_date}"):
+            os.makedirs(HEALTH_ATTACHMENTS_DIR, exist_ok=True)
+            saved = list(selected_attachments)
+            for f in new_files:
+                dest = os.path.join(HEALTH_ATTACHMENTS_DIR, f"{selected_date}_{f.name}")
+                with open(dest, "wb") as out:
+                    out.write(f.getbuffer())
+                saved.append(dest)
+            set_routine_day(selected_date, attachment_paths=saved)
+            st.success("✅ Adjuntos guardados en la rutina")
+            st.rerun()
+
+        st.divider()
+        st.subheader("🔢 Métricas del día")
         with st.form("health_checkin_form"):
             checkin_date = st.date_input("Fecha", value=datetime.utcnow().date())
             col1, col2 = st.columns(2)
